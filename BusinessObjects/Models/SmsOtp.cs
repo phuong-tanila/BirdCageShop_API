@@ -3,9 +3,8 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class SmsOtp
+    public partial class SmsOtp : BaseEntity
     {
-        public int OtpId { get; set; }
         public DateTime? CreateAt { get; set; }
         public DateTime? ExpiredAt { get; set; }
         public string? OtpValue { get; set; }

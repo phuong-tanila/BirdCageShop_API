@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BusinessObjects.Models
 {
-    public partial class BirdCageShopContext : DbContext
+    public partial class BirdCageShopContext : IdentityDbContext<Account>
     {
         public BirdCageShopContext()
         {
         }
 
-        public BirdCageShopContext(DbContextOptions<BirdCageShopContext> options)
-            : base(options)
-        {
-        }
+        //public BirdCageShopContext(DbContextOptions<BirdCageShopContext> options)
+        //    : base(options)
+        //{
+        //}
 
-        public virtual DbSet<Account> Accounts { get; set; } = null!;
+        //public virtual DbSet<Account> Accounts { get; set; } = null!;
         public virtual DbSet<Cage> Cages { get; set; } = null!;
-        public virtual DbSet<CageBuildingProcess> CageBuildingProcesses { get; set; } = null!;
         public virtual DbSet<CageComponent> CageComponents { get; set; } = null!;
         public virtual DbSet<Component> Components { get; set; } = null!;
         public virtual DbSet<Customer> Customers { get; set; } = null!;
@@ -40,30 +40,31 @@ namespace BusinessObjects.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>(entity =>
-            {
-                entity.ToTable("Account");
+            base.OnModelCreating(modelBuilder);
+            //modelBuilder.Entity<Account>(entity =>
+            //{
+            //    entity.ToTable("Account");
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__Account__17A35CA435B48A95")
-                    .IsUnique();
+            //    entity.HasIndex(e => e.PhoneNumber, "UQ__Account__17A35CA435B48A95")
+            //        .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.Id)
+            //        .HasMaxLength(32)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.Password)
-                    .HasMaxLength(20)
-                    .IsUnicode(false);
+            //    entity.Property(e => e.Password)
+            //        .HasMaxLength(20)
+            //        .IsUnicode(false);
 
-                entity.Property(e => e.PhoneNumber)
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("Phone_Number");
+            //    entity.Property(e => e.PhoneNumber)
+            //        .HasMaxLength(10)
+            //        .IsUnicode(false)
+            //        .HasColumnName("Phone_Number");
 
-                entity.Property(e => e.Role)
-                    .HasMaxLength(2)
-                    .IsUnicode(false);
-            });
+            //    entity.Property(e => e.Role)
+            //        .HasMaxLength(2)
+            //        .IsUnicode(false);
+            //});
 
             modelBuilder.Entity<Cage>(entity =>
             {
@@ -96,44 +97,16 @@ namespace BusinessObjects.Models
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<CageBuildingProcess>(entity =>
-            {
-                entity.ToTable("CageBuildingProcess");
-
-                entity.Property(e => e.Id)
-                    .HasMaxLength(32)
-                    .IsUnicode(false)
-                    .HasColumnName("id");
-
-                entity.Property(e => e.DepositDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Deposit_Date");
-
-                entity.Property(e => e.EstimateNextDepositDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Estimate_Next_Deposit_Date");
-
-                entity.Property(e => e.EstimateNumberDayComplete).HasColumnName("Estimate_Number_Day_Complete");
-
-                entity.Property(e => e.OrderDetailId)
-                    .HasMaxLength(32)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.ProcessComplete).HasColumnName("Process_Complete");
-
-                entity.Property(e => e.StaffRequestDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("Staff_Request_Date");
-            });
+          
 
             modelBuilder.Entity<CageComponent>(entity =>
             {
-                entity.HasKey(e => new { e.CageId, e.ComponentId })
+                entity.HasKey(e => new { e.Id, e.ComponentId })
                     .HasName("PK__Cage_Com__8454509EA6C724D8");
 
                 entity.ToTable("Cage_Component");
 
-                entity.Property(e => e.CageId)
+                entity.Property(e => e.Id)
                     .HasMaxLength(32)
                     .IsUnicode(false);
 
@@ -143,7 +116,7 @@ namespace BusinessObjects.Models
 
                 entity.HasOne(d => d.Cage)
                     .WithMany(p => p.CageComponents)
-                    .HasForeignKey(d => d.CageId)
+                    .HasForeignKey(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKCage_Compo677311");
 
@@ -335,12 +308,12 @@ namespace BusinessObjects.Models
 
             modelBuilder.Entity<SmsOtp>(entity =>
             {
-                entity.HasKey(e => e.OtpId)
+                entity.HasKey(e => e.Id)
                     .HasName("PK__sms_otp__AEE3543598D1704F");
 
                 entity.ToTable("Sms_otp");
 
-                entity.Property(e => e.OtpId).HasColumnName("otp_id");
+                entity.Property(e => e.Id).HasColumnName("otp_id");
 
                 entity.Property(e => e.CreateAt)
                     .HasPrecision(6)

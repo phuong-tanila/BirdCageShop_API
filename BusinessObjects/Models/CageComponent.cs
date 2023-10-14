@@ -3,10 +3,9 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class CageComponent
+    public partial class CageComponent : BaseEntity
     {
-        public string CageId { get; set; } = null!;
-        public string ComponentId { get; set; } = null!;
+        public Guid ComponentId { get; set; }
         public int? Quantity { get; set; }
 
         public virtual Cage Cage { get; set; } = null!;

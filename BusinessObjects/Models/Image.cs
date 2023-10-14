@@ -3,11 +3,10 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class Image
+    public partial class Image : BaseEntity
     {
-        public string Id { get; set; } = null!;
         public string ImagePath { get; set; } = null!;
-        public string CageId { get; set; } = null!;
+        public Guid CageId { get; set; }
 
         public virtual Cage Cage { get; set; } = null!;
     }

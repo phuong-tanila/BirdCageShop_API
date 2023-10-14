@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class Cage
+    public partial class Cage : BaseEntity
     {
         public Cage()
         {
@@ -12,7 +12,6 @@ namespace BusinessObjects.Models
             OrderDetails = new HashSet<OrderDetail>();
         }
 
-        public string Id { get; set; } = null!;
         public string Name { get; set; } = null!;
         public float Length { get; set; }
         public float Width { get; set; }
