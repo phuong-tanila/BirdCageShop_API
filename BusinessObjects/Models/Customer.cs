@@ -14,9 +14,9 @@ namespace BusinessObjects.Models
         public string? FirstName { get; set; }
         public DateTime? BirthDate { get; set; }
         public int Point { get; set; }
-        public string AccountId { get; set; }
+        public string? AccountId { get; set; }
 
-        public virtual Account Account { get; set; } = null!;
+        public virtual Account? Account { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

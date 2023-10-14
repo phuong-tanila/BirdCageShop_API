@@ -12,10 +12,7 @@ namespace BusinessObjects.Models
             Customers = new HashSet<Customer>();
         }
 
-        //public string PhoneNumber { get; set; } = null!;
-        //public string Password { get; set; } = null!;
-        //public int Status { get; set; }
-        //public string Role { get; set; } = null!;
+        public int Status { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
     }

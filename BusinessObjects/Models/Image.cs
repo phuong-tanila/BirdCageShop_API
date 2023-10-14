@@ -5,9 +5,9 @@ namespace BusinessObjects.Models
 {
     public partial class Image : BaseEntity
     {
-        public string ImagePath { get; set; } = null!;
-        public Guid CageId { get; set; }
+        public string ImagePath { get; set; }
+        public Guid? CageId { get; set; }
 
-        public virtual Cage Cage { get; set; } = null!;
+        public virtual Cage? Cage { get; set; }
     }
 }

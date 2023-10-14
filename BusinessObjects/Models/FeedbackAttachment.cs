@@ -5,9 +5,9 @@ namespace BusinessObjects.Models
 {
     public partial class FeedbackAttachment : BaseEntity
     {
-        public string? Path { get; set; }
-        public Guid OrderDetailId { get; set; }
+        public string Path { get; set; }
+        public Guid? OrderDetailId { get; set; }
 
-        public virtual OrderDetail OrderDetail { get; set; } = null!;
+        public virtual OrderDetail? OrderDetail { get; set; }
     }
 }

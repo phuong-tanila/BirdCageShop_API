@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 
 namespace BusinessObjects.Models
 {
@@ -12,17 +13,16 @@ namespace BusinessObjects.Models
             OrderDetails = new HashSet<OrderDetail>();
         }
 
-        public string Name { get; set; } = null!;
-        public float Length { get; set; }
-        public float Width { get; set; }
-        public float Height { get; set; }
-        public int? InStock { get; set; }
-        public string? Description { get; set; }
+        public string Name { get; set; }
+        public double Length { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public int InStock { get; set; }
+        public string Description { get; set; }
         public DateTime CreateDate { get; set; }
         public int Price { get; set; }
-        public string Status { get; set; } = null!;
-        public int? Rating { get; set; }
-        public string? ImagePath { get; set; }
+        public double Rating { get; set; }
+        public string ImagePath { get; set; }
 
         public virtual ICollection<CageComponent> CageComponents { get; set; }
         public virtual ICollection<Image> Images { get; set; }

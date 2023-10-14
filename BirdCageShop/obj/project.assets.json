@@ -4139,16 +4139,6 @@
         "runtime": {
           "bin/placeholder/DataTransferObjects.dll": {}
         }
-      },
-      "Repositories/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v6.0",
-        "compile": {
-          "bin/placeholder/Repositories.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Repositories.dll": {}
-        }
       }
     }
   },
@@ -11730,11 +11720,6 @@
       "type": "project",
       "path": "../DataTransferObjects/DataTransferObjects.csproj",
       "msbuildProject": "../DataTransferObjects/DataTransferObjects.csproj"
-    },
-    "Repositories/1.0.0": {
-      "type": "project",
-      "path": "../Repositories/Repositories.csproj",
-      "msbuildProject": "../Repositories/Repositories.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -11746,29 +11731,23 @@
       "Microsoft.EntityFrameworkCore.Sqlite >= 6.0.23",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.23",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.16",
-      "Repositories >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.5.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Admin\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\armor\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\BirdCageShop\\BirdCageShop.csproj",
+      "projectUniqueName": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
       "projectName": "BirdCageShop",
-      "projectPath": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\BirdCageShop\\BirdCageShop.csproj",
-      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\BirdCageShop\\obj\\",
+      "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
+      "packagesPath": "C:\\Users\\armor\\.nuget\\packages\\",
+      "outputPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BirdCageShop\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\armor\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11776,21 +11755,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\BusinessObjects\\BusinessObjects.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\BusinessObjects\\BusinessObjects.csproj"
+            "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
+              "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
             },
-            "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\DataTransferObjects\\DataTransferObjects.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\DataTransferObjects\\DataTransferObjects.csproj"
-            },
-            "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\Repositories\\Repositories.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Desktop\\BirdCage BE\\BirdCageShop\\Repositories\\Repositories.csproj"
+            "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
+              "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
             }
           }
         }
@@ -11851,7 +11826,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

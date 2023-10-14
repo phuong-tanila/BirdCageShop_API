@@ -5,10 +5,11 @@ namespace BusinessObjects.Models
 {
     public partial class CageComponent : BaseEntity
     {
-        public Guid ComponentId { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
+        public Guid? ComponentId { get; set; }
+        public Guid? CageId { get; set; }
 
-        public virtual Cage Cage { get; set; } = null!;
-        public virtual Component Component { get; set; } = null!;
+        public virtual Cage? Cage { get; set; }
+        public virtual Component? Component { get; set; }
     }
 }

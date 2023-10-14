@@ -11,16 +11,15 @@ namespace BusinessObjects.Models
         }
 
         public int Price { get; set; }
-        public int Status { get; set; }
-        public Guid OrderId { get; set; }
+        public int Quantity { get; set; }
+        public int? Rating { get; set; }
         public string? Content { get; set; }
         public DateTime? PostDate { get; set; }
-        public int? Rating { get; set; }
-        public int? Quantity { get; set; }
-        public Guid CageId { get; set; }
+        public Guid? OrderId { get; set; }
+        public Guid? CageId { get; set; }
 
-        public virtual Cage Cage { get; set; } = null!;
-        public virtual Order Order { get; set; } = null!;
+        public virtual Cage? Cage { get; set; }
+        public virtual Order? Order { get; set; }
         public virtual ICollection<FeedbackAttachment> FeedbackAttachments { get; set; }
     }
 }

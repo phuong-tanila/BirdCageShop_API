@@ -13,8 +13,7 @@ namespace BusinessObjects.Models
         public string Title { get; set; } = null!;
         public DateTime EffectiveDate { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public int? ConditionPoint { get; set; }
-        public int Status { get; set; }
+        public int ConditionPoint { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
     }
