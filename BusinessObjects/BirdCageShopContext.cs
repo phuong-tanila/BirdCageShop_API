@@ -16,16 +16,16 @@ namespace BusinessObjects
         //{
         //}
 
-        public virtual DbSet<Cage> Cages { get; set; }
-        public virtual DbSet<CageComponent> CageComponents { get; set; }
-        public virtual DbSet<Component> Components { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<FeedbackAttachment> FeedbackAttachments { get; set; }
-        public virtual DbSet<Image> Images { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<OrderDetail> OrderDetails { get; set; }
-        public virtual DbSet<SmsOtp> SmsOtps { get; set; }
-        public virtual DbSet<Voucher> Vouchers { get; set; }
+        public virtual DbSet<Cage> Cages { get; set; } = null!;
+        public virtual DbSet<CageComponent> CageComponents { get; set; } = null!;
+        public virtual DbSet<Component> Components { get; set; } = null!;
+        public virtual DbSet<Customer> Customers { get; set; } = null!;
+        public virtual DbSet<FeedbackAttachment> FeedbackAttachments { get; set; } = null!;
+        public virtual DbSet<Image> Images { get; set; } = null!;
+        public virtual DbSet<Order> Orders { get; set; } = null!;
+        public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+        public virtual DbSet<SmsOtp> SmsOtps { get; set; } = null!;
+        public virtual DbSet<Voucher> Vouchers { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
