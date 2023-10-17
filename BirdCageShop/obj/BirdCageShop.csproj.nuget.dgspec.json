@@ -318,6 +318,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
+              },
               "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj": {
                 "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj"
               }

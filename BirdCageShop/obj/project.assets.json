@@ -4511,6 +4511,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "BusinessObjects": "1.0.0",
           "DataAccessObjects": "1.0.0"
         },
         "compile": {

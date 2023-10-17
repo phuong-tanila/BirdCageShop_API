@@ -11,7 +11,8 @@ namespace BusinessObjects.Models
         {
             Customers = new HashSet<Customer>();
         }
-
+        public string? RefreshToken { get; set; }
+        public DateTime RefreshTokenExpiryTime { get; set; }
         public int Status { get; set; }
 
         public virtual ICollection<Customer> Customers { get; set; }
