@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessObjects.Models
 {
-    public partial class Account
+    public partial class Account : IdentityUser
     {
         public Account()
         {

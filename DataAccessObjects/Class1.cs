@@ -1,7 +1,17 @@
-﻿namespace DataAccessObjects
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel.Design;
+
+namespace DataAccessObjects
 {
-    public class Class1
+    class A
     {
 
+    }
+    public static class Class1
+    {
+        public static void ConfigureServices(this IServiceCollection services)
+        {
+            //services.AddScoped(A);
+        }
     }
 }
