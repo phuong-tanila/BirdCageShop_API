@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "WYC63M1oO5B/DgHHVg4QC3vjJ/KCCJZlXbWpmzN3UAiAaAznnTf2hVxbLmkOq5s4bg8VX7G0fPixMcFyDaoDhw==",
+  "dgSpecHash": "q8d2hdVOeU6lJdIQrBAZRDAqQAPizZR7VADQHqeHfDtFE0jgzj3sTZDHw8XgVnOjlWM+j9lg9/9zD95UqtZWyA==",
   "success": true,
-  "projectFilePath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj",
+  "projectFilePath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

@@ -26,3 +26,17 @@ D:\FPT\CN8\PRN231\Project\Group_project\BirdCageShop_API\BusinessObjects\obj\Deb
 D:\FPT\CN8\PRN231\Project\Group_project\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.pdb
 D:\FPT\CN8\PRN231\Project\Group_project\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.genruntimeconfig.cache
 D:\FPT\CN8\PRN231\Project\Group_project\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\ref\BusinessObjects.dll
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\bin\Debug\net6.0\BusinessObjects.deps.json
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\bin\Debug\net6.0\BusinessObjects.runtimeconfig.json
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\bin\Debug\net6.0\BusinessObjects.dll
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\bin\Debug\net6.0\BusinessObjects.pdb
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.csproj.AssemblyReference.cache
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.AssemblyInfoInputs.cache
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.AssemblyInfo.cs
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.csproj.CoreCompileInputs.cache
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.dll
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\refint\BusinessObjects.dll
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.pdb
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\BusinessObjects.genruntimeconfig.cache
+E:\code\BirdCageShop\v1\BirdCageShop_API\BusinessObjects\obj\Debug\net6.0\ref\BusinessObjects.dll
