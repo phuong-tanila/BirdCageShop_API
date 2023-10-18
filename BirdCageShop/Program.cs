@@ -20,10 +20,12 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<RoleDAO>();
+builder.Services.AddScoped<ComponentDAO>();
 builder.Services.AddScoped<VoucherDAO>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 
 builder.Services.AddDbContext<BirdCageShopContext>();

@@ -13,10 +13,7 @@ namespace DataAccessObjects
     public class VoucherDAO
     {
         private readonly BirdCageShopContext _context;
-        public VoucherDAO(BirdCageShopContext context)
-        {
-            _context = context;
-        }
+        public VoucherDAO(BirdCageShopContext context) { _context = context; }
 
         public async Task<List<Voucher>> GetAllAsync()
             => await _context.Vouchers.Where(e => e.IsDeleted == false
@@ -49,7 +46,7 @@ namespace DataAccessObjects
         }
 
         public async Task<bool> ExistAsync(Guid id)
-            => await _context.Vouchers.AnyAsync(e => e.Id == id);
+            => await _context.Vouchers.AnyAsync(e => e.Id == id && e.IsDeleted == false);
 
     }
 }

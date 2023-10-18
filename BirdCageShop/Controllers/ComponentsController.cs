@@ -9,72 +9,57 @@ using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
+using Repositories;
 
 namespace BirdCageShop.Controllers
 {
     public class ComponentsController : ODataController
     {
-        private readonly BirdCageShopContext _context;
+        private readonly IComponentRepository _repo;
 
-        public ComponentsController(BirdCageShopContext context)
+        public ComponentsController(IComponentRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
         // GET: odata/Components
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<Component>>> GetAsync()
         {
-            if (_context.Components == null)
-            {
-                return NotFound();
-            }
-            return await _context.Components.ToListAsync();
+            return Ok(await _repo.GetAllAsync());
         }
 
         // GET: odata/Components/5
         [EnableQuery]
         public async Task<ActionResult<Component>> GetAsync(Guid key)
         {
-            if (_context.Components == null)
-            {
-                return NotFound();
-            }
-            var component = await _context.Components.FindAsync(key);
+            var model = await _repo.GetByIdAsync(key);
 
-            if (component == null)
-            {
-                return NotFound();
-            }
+            if (model == null) return NotFound();
 
-            return component;
+            return Ok(model);
         }
 
         // PUT: odata/Components/5
         [EnableQuery]
-        public async Task<IActionResult> PutAsync(Guid key, Component component)
+        public async Task<IActionResult> PutAsync(Guid key, [FromBody] Component model)
         {
-            if (key != component.Id)
+            if (!ModelState.IsValid || model is null || key != model.Id)
             {
-                return BadRequest();
+                return BadRequest("Invalid format");
             }
-
-            _context.Entry(component).State = EntityState.Modified;
-
+            var isExist = await _repo.ExistAsync(key);
+            if (!isExist)
+            {
+                return NotFound();
+            }
             try
             {
-                await _context.SaveChangesAsync();
+                await _repo.UpdateAsync(model);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ComponentExists(key))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest();
             }
 
             return NoContent();
@@ -84,12 +69,18 @@ namespace BirdCageShop.Controllers
         [EnableQuery]
         public async Task<ActionResult<Component>> PostAsync([FromBody] Component model)
         {
-            if (model == null)
+            if (!ModelState.IsValid || model is null)
             {
-                return BadRequest();
+                return BadRequest("Invalid format");
             }
-             _context.Components.Add(model);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _repo.AddAsync(model);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Create fail");
+            }
 
             return Created(model);
         }
@@ -98,25 +89,21 @@ namespace BirdCageShop.Controllers
         [EnableQuery]
         public async Task<IActionResult> DeleteAsync(Guid key)
         {
-            if (_context.Components == null)
+            var model = await _repo.GetByIdAsync(key);
+            if (model is null)
             {
                 return NotFound();
             }
-            var component = await _context.Components.FindAsync(key);
-            if (component == null)
+            try
             {
-                return NotFound();
+                await _repo.DeleteAsync(model);
             }
-
-            _context.Components.Remove(component);
-            await _context.SaveChangesAsync();
+            catch (Exception)
+            {
+                return BadRequest();
+            }
 
             return NoContent();
-        }
-
-        private bool ComponentExists(Guid id)
-        {
-            return (_context.Components?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

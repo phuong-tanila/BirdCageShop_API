@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Repositories;
 using Microsoft.AspNetCore.OData.Query;
@@ -30,7 +23,7 @@ namespace BirdCageShop.Controllers
         //[Authorize]
         public async Task<ActionResult<IEnumerable<Voucher>>> GetAsync()
         {
-            return await _repo.GetAllAsync();
+            return Ok(await _repo.GetAllAsync());
         }
 
         // GET: odata/Vouchers/5
@@ -38,16 +31,16 @@ namespace BirdCageShop.Controllers
         //[Authorize]
         public async Task<ActionResult<Voucher>> GetAsync(Guid key)
         {
-            var voucher = await _repo.GetByIdAsync(key);
+            var model = await _repo.GetByIdAsync(key);
 
-            if (voucher == null) return NotFound();
+            if (model == null) return NotFound();
 
-            return voucher;
+            return Ok(model);
         }
 
         [EnableQuery]
         //[Authorize(Roles = "Staff")]
-        public async Task<IActionResult> PutAsync(Guid key, [BindRequired][FromBody] Voucher model)
+        public async Task<IActionResult> PutAsync(Guid key, [FromBody] Voucher model)
         {
             if (!ModelState.IsValid || model is null || key != model.Id || !IsValid(model))
             {
@@ -73,9 +66,9 @@ namespace BirdCageShop.Controllers
         // POST: odata/Vouchers
         [EnableQuery]
         //[Authorize(Roles = "Staff")]
-        public async Task<ActionResult<Voucher>> PostAsync([FromBody] Voucher model)
+        public async Task<ActionResult<Voucher>> PostAsync([FromBody][BindRequired] Voucher model)
         {
-            if (model is null || !IsValid(model))
+            if (!ModelState.IsValid || model is null || !IsValid(model))
             {
                 return BadRequest("Invalid format");
             }
