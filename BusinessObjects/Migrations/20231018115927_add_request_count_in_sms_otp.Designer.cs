@@ -4,6 +4,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirdCageShopContext))]
-    partial class BirdCageShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231018115927_add_request_count_in_sms_otp")]
+    partial class add_request_count_in_sms_otp
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -409,12 +411,12 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreateAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("CreateAt");
+                        .HasColumnName("create_at");
 
                     b.Property<DateTime?>("ExpiredAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("ExpiredAt");
+                        .HasColumnName("expired_at");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -423,13 +425,13 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("OtpValue");
+                        .HasColumnName("otp_value");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("PhoneNumber");
+                        .HasColumnName("phone_number");
 
                     b.Property<int>("RequestCount")
                         .HasColumnType("int");
@@ -437,7 +439,7 @@ namespace BusinessObjects.Migrations
                     b.HasKey("Id")
                         .HasName("PK_SMS_OTP");
 
-                    b.ToTable("SmsOtp", (string)null);
+                    b.ToTable("Sms_otp", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Voucher", b =>

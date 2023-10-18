@@ -4,6 +4,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirdCageShopContext))]
-    partial class BirdCageShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231018075450_add_status_in_cage")]
+    partial class add_status_in_cage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,10 +208,6 @@ namespace BusinessObjects.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Component");
@@ -409,12 +407,12 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreateAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("CreateAt");
+                        .HasColumnName("create_at");
 
                     b.Property<DateTime?>("ExpiredAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("ExpiredAt");
+                        .HasColumnName("expired_at");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -423,21 +421,18 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("OtpValue");
+                        .HasColumnName("otp_value");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("PhoneNumber");
-
-                    b.Property<int>("RequestCount")
-                        .HasColumnType("int");
+                        .HasColumnName("phone_number");
 
                     b.HasKey("Id")
                         .HasName("PK_SMS_OTP");
 
-                    b.ToTable("SmsOtp", (string)null);
+                    b.ToTable("Sms_otp", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Voucher", b =>

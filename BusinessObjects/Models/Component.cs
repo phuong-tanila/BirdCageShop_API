@@ -17,6 +17,8 @@ namespace BusinessObjects.Models
         public int? Price { get; set; }
         [Required]
         public string? ImagePath { get; set; }
+        [Required]
+        public string? Type { get; set; }
         [IgnoreDataMember]
         public virtual ICollection<CageComponent>? CageComponents { get; set; }
     }

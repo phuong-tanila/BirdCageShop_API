@@ -246,28 +246,28 @@ namespace BusinessObjects
 
             modelBuilder.Entity<SmsOtp>(entity =>
             {
-                entity.ToTable("Sms_otp");
+                entity.ToTable("SmsOtp");
 
                 entity.HasKey(e => e.Id)
                     .HasName("PK_SMS_OTP");
 
                 entity.Property(e => e.CreateAt)
                     .HasPrecision(6)
-                    .HasColumnName("create_at");
+                    .HasColumnName("CreateAt");
 
                 entity.Property(e => e.ExpiredAt)
                     .HasPrecision(6)
-                    .HasColumnName("expired_at");
+                    .HasColumnName("ExpiredAt");
 
                 entity.Property(e => e.OtpValue)
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("otp_value");
+                    .HasColumnName("OtpValue");
 
                 entity.Property(e => e.PhoneNumber)
                     .HasMaxLength(255)
                     .IsUnicode(false)
-                    .HasColumnName("phone_number");
+                    .HasColumnName("PhoneNumber");
             });
 
             modelBuilder.Entity<Voucher>(entity =>
