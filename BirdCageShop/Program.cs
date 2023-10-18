@@ -3,7 +3,10 @@ using BusinessObjects.Models;
 using DataAccessObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Repositories;
 using Repositories.Implements;
 using System.Text;
@@ -17,9 +20,13 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<RoleDAO>();
+builder.Services.AddScoped<VoucherDAO>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
+
+builder.Services.AddDbContext<BirdCageShopContext>();
 
 builder.Services.AddIdentity<Account, IdentityRole>()
     .AddEntityFrameworkStores<BirdCageShopContext>()
@@ -49,13 +56,19 @@ builder.Services.AddAuthentication(
     };
 });
 
-builder.Services.AddDbContext<BirdCageShopContext>();
+var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Component>("Components");
+modelBuilder.EntitySet<Voucher>("Vouchers");
+modelBuilder.EntityType<Component>();
+modelBuilder.EntityType<Voucher>();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddOData(opt => opt.Select().Count().Filter().OrderBy().SetMaxTop(100)
+.SkipToken().Expand()
+.AddRouteComponents("odata", modelBuilder.GetEdmModel())
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 
 var app = builder.Build();
