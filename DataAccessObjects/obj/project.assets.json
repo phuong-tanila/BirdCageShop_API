@@ -1231,6 +1231,9 @@
       "DataTransferObjects/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
+        },
         "compile": {
           "bin/placeholder/DataTransferObjects.dll": {}
         },
@@ -2862,19 +2865,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\armor\\.nuget\\packages\\": {}
+    "C:\\Users\\15tha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
+      "projectUniqueName": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
       "projectName": "DataAccessObjects",
-      "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
-      "packagesPath": "C:\\Users\\armor\\.nuget\\packages\\",
-      "outputPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataAccessObjects\\obj\\",
+      "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
+      "packagesPath": "C:\\Users\\15tha\\.nuget\\packages\\",
+      "outputPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\armor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\15tha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2888,11 +2891,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
-              "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
+            "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
+              "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
             },
-            "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
-              "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
+            "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
+              "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
             }
           }
         }
@@ -2928,7 +2931,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
