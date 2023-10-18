@@ -1,3 +1,4 @@
+using BirdCageShop.Middleawares;
 using BusinessObjects;
 using BusinessObjects.Models;
 using DataAccessObjects;
@@ -67,9 +68,9 @@ modelBuilder.EntitySet<Voucher>("Vouchers");
 modelBuilder.EntitySet<Cage>("Cages");
 
 
+modelBuilder.EntityType<CageComponent>();
 modelBuilder.EntityType<Component>();
 modelBuilder.EntityType<Voucher>();
-modelBuilder.EntityType<CageComponent>();
 
 
 builder.Services.AddControllers()
@@ -94,6 +95,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<ErrorMiddleWare>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
