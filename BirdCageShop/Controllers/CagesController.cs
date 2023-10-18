@@ -9,6 +9,8 @@ using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
+using Repositories;
+using DataTransferObjects.CageDTOs;
 
 namespace BirdCageShop.Controllers
 {
@@ -16,10 +18,12 @@ namespace BirdCageShop.Controllers
     public class CagesController : ODataController
     {
         private readonly BirdCageShopContext _context;
-
-        public CagesController(BirdCageShopContext context)
+        private readonly ICageRepository _cageRepository;
+        public CagesController(BirdCageShopContext context, ICageRepository cageRepository)
         {
             _context = context;
+            _cageRepository = cageRepository;
+            
         }
 
         // GET: api/Cages
@@ -27,22 +31,18 @@ namespace BirdCageShop.Controllers
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<Cage>>> GetCages()
         {
-          if (_context.Cages == null)
-          {
-              return NotFound();
-          }
-            return await _context.Cages.ToListAsync();
+            
+            return await _cageRepository.GetCagesAsync();
         }
-
+        [EnableQuery]
         // GET: api/Cages/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Cage>> GetCage(Guid id)
+        public async Task<ActionResult<Cage>> Get(Guid key)
         {
-          if (_context.Cages == null)
-          {
-              return NotFound();
-          }
-            var cage = await _context.Cages.FindAsync(id);
+            if (_context.Cages == null)
+            {
+                return NotFound();
+            }
+            var cage = await _context.Cages.FindAsync(key);
 
             if (cage == null)
             {
@@ -54,10 +54,10 @@ namespace BirdCageShop.Controllers
 
         // PUT: api/Cages/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCage(Guid id, Cage cage)
+        [HttpPut("{key}")]
+        public async Task<IActionResult> Put(Guid key, Cage cage)
         {
-            if (id != cage.Id)
+            if (key != cage.Id)
             {
                 return BadRequest();
             }
@@ -70,7 +70,7 @@ namespace BirdCageShop.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CageExists(id))
+                if (!CageExists(key))
                 {
                     return NotFound();
                 }
@@ -85,28 +85,29 @@ namespace BirdCageShop.Controllers
 
         // POST: api/Cages
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [EnableQuery]
         [HttpPost]
-        public async Task<ActionResult<Cage>> PostCage(Cage cage)
+        public async Task<ActionResult<Cage>> Post([FromBody]CreateCageModel model)
         {
-          if (_context.Cages == null)
-          {
-              return Problem("Entity set 'BirdCageShopContext.Cages'  is null.");
-          }
-            _context.Cages.Add(cage);
-            await _context.SaveChangesAsync();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdCage = await _cageRepository.CreateAsync(model);
 
-            return CreatedAtAction("GetCage", new { id = cage.Id }, cage);
+            return CreatedAtAction("GetCage", new { key = createdCage.Id }, createdCage);
         }
 
         // DELETE: api/Cages/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCage(Guid id)
+        [EnableQuery]
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> Delete(Guid key)
         {
             if (_context.Cages == null)
             {
                 return NotFound();
             }
-            var cage = await _context.Cages.FindAsync(id);
+            var cage = await _context.Cages.FindAsync(key);
             if (cage == null)
             {
                 return NotFound();
@@ -118,9 +119,9 @@ namespace BirdCageShop.Controllers
             return NoContent();
         }
 
-        private bool CageExists(Guid id)
+        private bool CageExists(Guid key)
         {
-            return (_context.Cages?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cages?.Any(e => e.Id == key)).GetValueOrDefault();
         }
     }
 }

@@ -9,137 +9,118 @@ using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Repositories;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BirdCageShop.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class VouchersController : ControllerBase
+    public class VouchersController : ODataController
     {
-        private readonly BirdCageShopContext _context;
+        private readonly IVoucherRepository _repo;
 
-        public VouchersController(BirdCageShopContext context)
+        public VouchersController(IVoucherRepository repo)
         {
-            _context = context;
+            _repo = repo;
         }
 
-        // GET: api/Vouchers
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Voucher>>> GetVouchers()
+        // GET: odata/Vouchers
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<Voucher>>> GetAsync()
         {
-          if (_context.Vouchers == null)
-          {
-              return NotFound();
-          }
-            return await _context.Vouchers.ToListAsync();
+            var a = await _repo.GetAllAsync();
+            return a;
         }
 
-        // GET: api/Vouchers/5
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Customer")]
-        public async Task<ActionResult<Voucher>> GetVoucher(Guid id)
+        // GET: odata/Vouchers/5
+        [EnableQuery]
+        //[Authorize(Roles = "Customer")]
+        public async Task<ActionResult<Voucher>> GetAsync(Guid key)
         {
-          //if (_context.Vouchers == null)
-          //{
-          //    return NotFound();
-          //}
-            var voucher = await _context.Vouchers.FindAsync(id);
+            var voucher = await _repo.GetByIdAsync(key);
 
-            //if (voucher == null)
-            //{
-            //    return NotFound();
-            //}
+            if (voucher == null) return NotFound();
 
             return voucher;
         }
 
-        [HttpGet("1/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<Voucher>> GetVoucher1(Guid id)
+        [EnableQuery]
+        public async Task<IActionResult> PutAsync(Guid key, [FromBody] Voucher model)
         {
-            if (_context.Vouchers == null)
+            if (key != model.Id || !IsValid(model))
+            {
+                return BadRequest();
+            }
+            var isExist = await _repo.ExistAsync(key);
+            if (!isExist)
             {
                 return NotFound();
             }
-            var voucher = await _context.Vouchers.FindAsync(id);
-
-            if (voucher == null)
+            try
             {
-                return NotFound();
+                await _repo.UpdateAsync(model);
             }
-
-            return voucher;
-        }
-
-        // PUT: api/Vouchers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutVoucher(Guid id, Voucher voucher)
-        {
-            if (id != voucher.Id)
+            catch (DbUpdateConcurrencyException)
             {
                 return BadRequest();
             }
 
-            _context.Entry(voucher).State = EntityState.Modified;
+            return NoContent();
+        }
 
+        // POST: odata/Vouchers
+        [EnableQuery]
+        //[Authorize(Roles = "Admin")]
+        public async Task<ActionResult<Voucher>> PostAsync([FromBody] Voucher model)
+        {
+            if (model == null || !IsValid(model))
+            {
+                return BadRequest();
+            }
             try
             {
-                await _context.SaveChangesAsync();
+                await _repo.AddAsync(model);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception)
             {
-                if (!VoucherExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest("Create fail");
+            }
+
+            return Created(model);
+        }
+
+        // DELETE: odata/Vouchers/5
+        [EnableQuery]
+        //[Authorize]
+        public async Task<IActionResult> DeleteAsync(Guid key)
+        {
+            var model = await _repo.GetByIdAsync(key);
+            if (model is null)
+            {
+                return NotFound();
+            }
+            if (!IsValid(model))
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await _repo.DeleteAsync(model);
+            }
+            catch (Exception)
+            {
+                return BadRequest();
             }
 
             return NoContent();
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Voucher>> PostVoucher(Voucher voucher)
+        private bool IsValid(Voucher model)
         {
-          if (_context.Vouchers == null)
-          {
-              return Problem("Entity set 'BirdCageShopContext.Vouchers'  is null.");
-          }
-            _context.Vouchers.Add(voucher);
-            await _context.SaveChangesAsync();
+            if (model.ExpirationDate <= model.EffectiveDate) return false;
+            if (model.ExpirationDate <= DateTime.Now) return false;
 
-            return CreatedAtAction("GetVoucher", new { id = voucher.Id }, voucher);
-        }
-
-        // DELETE: api/Vouchers/5
-        [HttpDelete("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteVoucher(Guid id)
-        {
-            if (_context.Vouchers == null)
-            {
-                return NotFound();
-            }
-            var voucher = await _context.Vouchers.FindAsync(id);
-            if (voucher == null)
-            {
-                return NotFound();
-            }
-
-            _context.Vouchers.Remove(voucher);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool VoucherExists(Guid id)
-        {
-            return (_context.Vouchers?.Any(e => e.Id == id)).GetValueOrDefault();
+            return true;
         }
     }
 }
