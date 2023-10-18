@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -9,12 +11,15 @@ namespace BusinessObjects.Models
         {
             Orders = new HashSet<Order>();
         }
-
-        public string Title { get; set; } = null!;
+        [Required]
+        public string? Title { get; set; }
+        [Required]
         public DateTime EffectiveDate { get; set; }
+        [Required]
         public DateTime ExpirationDate { get; set; }
-        public int ConditionPoint { get; set; }
-
-        public virtual ICollection<Order> Orders { get; set; }
+        [Required]
+        public int? ConditionPoint { get; set; }
+        [IgnoreDataMember]
+        public virtual ICollection<Order>? Orders { get; set; }
     }
 }
