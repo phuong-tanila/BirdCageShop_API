@@ -19,12 +19,8 @@ namespace DataAccessObjects
         }
 
         public async Task<List<Voucher>> GetAllAsync()
-        {
-           //var a = await _context.Vouchers.Where(e => e.IsDeleted == false
-           //     && e.ExpirationDate > DateTime.Now).ToListAsync();
-           var a = await _context.Vouchers.ToListAsync();
-            return a;
-        }
+            => await _context.Vouchers.Where(e => e.IsDeleted == false
+                 && e.ExpirationDate > DateTime.Now).ToListAsync();
 
         public async Task<Voucher?> GetByIdAsync(Guid id)
             => await _context.Vouchers.FirstOrDefaultAsync(e => e.Id == id
