@@ -23,6 +23,7 @@ namespace Repositories.Commons
         private void createCageModels()
         {
             CreateMap<CreateCageModel, Cage>();
+            CreateMap<UpdateCageModel, Cage>();
             CreateMap<CreateImageModel, Image>();
             CreateMap<CreateCageComponentModel, CageComponent>();
         }

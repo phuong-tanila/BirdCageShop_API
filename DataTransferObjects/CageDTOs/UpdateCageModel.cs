@@ -1,17 +1,17 @@
-﻿using System;
+﻿using DataTransferObjects.CageComponentDTOs;
+using DataTransferObjects.Commons.ValidatorAttributes;
+using DataTransferObjects.ImageDTOs;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DataTransferObjects.CageComponentDTOs;
-using DataTransferObjects.Commons.ValidatorAttributes;
-using DataTransferObjects.ImageDTOs;
 
 namespace DataTransferObjects.CageDTOs
 {
-    public record CreateCageModel
+    public class UpdateCageModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -33,6 +33,5 @@ namespace DataTransferObjects.CageDTOs
         public ISet<CreateCageComponentModel> CageComponents { get; set; }
 
         public string Status { get; set; }
-
     }
 }
