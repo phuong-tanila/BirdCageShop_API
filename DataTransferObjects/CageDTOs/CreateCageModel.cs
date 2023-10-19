@@ -32,5 +32,7 @@ namespace DataTransferObjects.CageDTOs
 
         public ISet<CreateCageComponentModel> CageComponents { get; set; }
 
+        public string Status { get; set; }
+
     }
 }

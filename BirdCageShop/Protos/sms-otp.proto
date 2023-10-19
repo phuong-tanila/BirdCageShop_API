@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "Grpc";
+
+service SmsOtp{
+    rpc SendOtp(GrpcSmsOtpRequest) returns (GrpcSmsOtpResponse);
+
+    rpc VerifyOtp(GrpcVerifyOtpRequest) returns (GrpcVerifyOtpResponse);
+}
+
+message GrpcSmsOtpRequest{
+    string phoneNumber = 1;
+}
+message GrpcSmsOtpResponse{
+    string otpId = 1;
+    string phoneNumber = 2;
+    string createAt = 3;
+    string expiredAt = 4;
+}
+message GrpcVerifyOtpRequest{
+    string phoneNumber = 1;
+    string otpValue = 2;
+}
+message GrpcVerifyOtpResponse{
+    bool valid = 1;
+}

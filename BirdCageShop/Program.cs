@@ -1,3 +1,4 @@
+using BirdCageShop.Grpcs;
 using BirdCageShop.Middleawares;
 using BusinessObjects;
 using BusinessObjects.Models;
@@ -18,12 +19,17 @@ var config = builder.Configuration;
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-
+builder.Services.AddGrpc(opts =>
+{
+    opts.EnableDetailedErrors = true;
+    //opts.
+});
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<RoleDAO>();
 builder.Services.AddScoped<ComponentDAO>();
 builder.Services.AddScoped<VoucherDAO>();
 builder.Services.AddScoped<CageDAO>();
+builder.Services.AddScoped<SmsDAO>();
 
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -31,6 +37,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<ICageRepository, CageRepository>();
+builder.Services.AddScoped<ISmsOtpRepository, SmsOtpRepository>();
 
 builder.Services.AddDbContext<BirdCageShopContext>();
 
@@ -101,6 +108,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+app.MapGrpcService<GrpcSmsOtpService>();
 
 app.MapControllers();
 

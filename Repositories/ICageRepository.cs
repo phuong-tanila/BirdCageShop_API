@@ -11,7 +11,10 @@ namespace Repositories
     public interface ICageRepository
     {
         Task<List<Cage>> GetCagesAsync();
-
+        Task<List<Cage>> GetNonDeletedCagesAsync();
         Task<Cage> CreateAsync(CreateCageModel model);
+        Task<Cage> GetNonDeletedCageByIdAsync(Guid key);
+        Task<Cage> UpdateCageAsync(Guid key, UpdateCageModel cage);
+        Task<Cage> DeleteCageAsync(Guid key);
     }
 }

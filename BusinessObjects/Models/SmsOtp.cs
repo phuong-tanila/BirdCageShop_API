@@ -9,5 +9,6 @@ namespace BusinessObjects.Models
         public DateTime? ExpiredAt { get; set; }
         public string? OtpValue { get; set; }
         public string? PhoneNumber { get; set; }
+        public int RequestCount { get; set; }
     }
 }
