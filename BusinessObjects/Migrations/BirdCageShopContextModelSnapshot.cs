@@ -140,6 +140,10 @@ namespace BusinessObjects.Migrations
                     b.Property<double>("Rating")
                         .HasColumnType("float");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Width")
                         .HasColumnType("float");
 
@@ -198,9 +202,14 @@ namespace BusinessObjects.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<int>("Price")
+                    b.Property<int?>("Price")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Component");
@@ -400,12 +409,12 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreateAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("create_at");
+                        .HasColumnName("CreateAt");
 
                     b.Property<DateTime?>("ExpiredAt")
                         .HasPrecision(6)
                         .HasColumnType("datetime2(6)")
-                        .HasColumnName("expired_at");
+                        .HasColumnName("ExpiredAt");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -414,18 +423,21 @@ namespace BusinessObjects.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("otp_value");
+                        .HasColumnName("OtpValue");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("phone_number");
+                        .HasColumnName("PhoneNumber");
+
+                    b.Property<int>("RequestCount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id")
                         .HasName("PK_SMS_OTP");
 
-                    b.ToTable("Sms_otp", (string)null);
+                    b.ToTable("SmsOtp", (string)null);
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Voucher", b =>
@@ -434,7 +446,8 @@ namespace BusinessObjects.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ConditionPoint")
+                    b.Property<int?>("ConditionPoint")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EffectiveDate")
