@@ -10,22 +10,31 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
+using Microsoft.AspNetCore.OData.Query;
+using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 
 namespace BirdCageShop.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountsController : ControllerBase
+    [Route("odata/[Controller]")]
+    public class AccountsController : ODataController
     {
         private readonly IAccountRepository _repo;
+        private readonly ICustomerRepository _cusRepo;
 
-        public AccountsController(IAccountRepository repo)
+        public AccountsController(IAccountRepository repo
+            , ICustomerRepository cusRepo)
         {
             _repo = repo;
+            _cusRepo = cusRepo;
         }
 
+        //[ODataRouteComponent]
+        //[ODataRouting]
+        [EnableQuery]
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn(SignInDTO signInModel)
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInModel)
         {
             try
             {
@@ -44,7 +53,7 @@ namespace BirdCageShop.Controllers
         }
 
         [HttpPost("sign-up")]
-        public async Task<IdentityResult> SignUpAsync(SignUpDTO model)
+        public async Task<IdentityResult> SignUpAsync([FromBody] SignUpDTO model)
         {
             return await _repo.SignUpAsync(model);
         }
@@ -61,7 +70,8 @@ namespace BirdCageShop.Controllers
         [HttpPost("sign-out")]
         public async Task<IActionResult> Revoke()
         {
-            string accessToken = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", ""); ;
+            string accessToken = Request.Headers[HeaderNames.Authorization]
+                .ToString().Replace("Bearer ", ""); ;
             if (accessToken is null)
             {
                 return BadRequest("Invalid client request");
@@ -87,7 +97,7 @@ namespace BirdCageShop.Controllers
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken(Token token)
+        public async Task<IActionResult> RefreshToken([FromBody] Token token)
         {
             if (token is null || token.AccessToken is null || token.RefreshToken is null)
             {
@@ -95,28 +105,92 @@ namespace BirdCageShop.Controllers
             }
             string accessToken = token.AccessToken;
             string refreshToken = token.RefreshToken;
-
-            var principal = _repo.GetPrincipalFromExpiredToken(accessToken);
-            if (principal is null || principal.Identity is null || principal.Identity.Name is null)
-            {
-                return BadRequest("Invalid access token or refresh token");
-            }
-            string username = principal.Identity.Name;
-            var user = await _repo.FindByNameAsync(username);
-            if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            {
-                return BadRequest("Invalid access token or refresh token");
-            }
             try
             {
+                // Check valid token
+                var principal = _repo.GetPrincipalFromExpiredToken(accessToken);
+                if (principal is null || principal.Identity is null || principal.Identity.Name is null)
+                {
+                    return BadRequest("Invalid access token");
+                }
+                string username = principal.Identity.Name;
+                var user = await _repo.FindByNameAsync(username);
+                if (user is null || user.RefreshToken != refreshToken
+                        || user.RefreshTokenExpiryTime <= DateTime.Now)
+                {
+                    return BadRequest("Invalid refresh token");
+                }
+
+                // Check expDate
+                var expClaim = principal.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Exp);
+                if (expClaim is null)
+                {
+                    return BadRequest("Invalid access token");
+                }
+                var utcExpireDate = long.Parse(expClaim.Value);
+                var expireDate = DateTimeOffset.FromUnixTimeSeconds(utcExpireDate).UtcDateTime;
+                if (expireDate > DateTime.UtcNow)
+                {
+                    return Ok("Access token has not yet expired");
+                }
+
+                // Create new token
                 var newToken = await _repo.GenerateTokenAsync(user);
                 return Ok(newToken);
             }
             catch (Exception)
             {
-                return BadRequest("Some thing wrong");
+                return BadRequest("Invalid access token or refresh token");
             }
         }
+
+        // GET: odata/Accounts/user-profile
+        [HttpGet("user-profile")]
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult<Customer>> GetProfileAsync()
+        {
+            try
+            {
+                var result = GetUsernameFromToken().Result;
+                var status = result.Result is OkObjectResult;
+                if (status)
+                {
+                    var user = (Account)(result.Result as OkObjectResult).Value!;
+                    var customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                    if (customer is null) return NotFound();
+                    return Ok(customer);
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return BadRequest("Something wrong");
+            }
+        }
+
+        private async Task<ActionResult<Customer>> GetUsernameFromToken()
+        {
+            string accessToken = Request.Headers[HeaderNames.Authorization]
+                .ToString().Replace("Bearer ", ""); ;
+            //if (accessToken is null) return BadRequest("Invalid client request");
+
+            try
+            {
+                ClaimsPrincipal principal = _repo.GetPrincipalFromExpiredToken(accessToken)!;
+                if (principal is null) return BadRequest("Invalid access token");
+
+                string username = principal.Identity!.Name!;
+                var user = await _repo.FindByNameAsync(username);
+                if (user is null) return BadRequest("Invalid user");
+
+                return Ok(user);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Invalid access token");
+            }
+        }
+
         private string? GetCurrentUser()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;

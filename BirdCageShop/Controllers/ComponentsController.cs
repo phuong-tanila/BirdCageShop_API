@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
@@ -42,6 +38,7 @@ namespace BirdCageShop.Controllers
 
         // PUT: odata/Components/5
         [EnableQuery]
+        //[Authorize(Roles = "Staff")]
         public async Task<IActionResult> PutAsync(Guid key, [FromBody] Component model)
         {
             if (!ModelState.IsValid || model is null || key != model.Id)
@@ -67,6 +64,7 @@ namespace BirdCageShop.Controllers
 
         // POST: odata/Components
         [EnableQuery]
+        //[Authorize(Roles = "Staff")]
         public async Task<ActionResult<Component>> PostAsync([FromBody] Component model)
         {
             if (!ModelState.IsValid || model is null)
@@ -87,6 +85,7 @@ namespace BirdCageShop.Controllers
 
         // DELETE: odata/Components/5
         [EnableQuery]
+        //[Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteAsync(Guid key)
         {
             var model = await _repo.GetByIdAsync(key);

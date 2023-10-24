@@ -20,11 +20,13 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.Al
 
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<RoleDAO>();
+builder.Services.AddScoped<CustomerDAO>();
 builder.Services.AddScoped<ComponentDAO>();
 builder.Services.AddScoped<VoucherDAO>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 
@@ -59,6 +61,7 @@ builder.Services.AddAuthentication(
 });
 
 var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EntitySet<Customer>("Customers");
 modelBuilder.EntitySet<Component>("Components");
 modelBuilder.EntitySet<Voucher>("Vouchers");
 modelBuilder.EntityType<Component>();

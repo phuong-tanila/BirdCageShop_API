@@ -56,6 +56,8 @@ namespace DataAccessObjects
             if (result.Succeeded)
             {
                 await _userManager.AddToRolesAsync(user, new List<string>() { "Customer" });
+                await _context.Customers.AddAsync(new Customer { AccountId = user.Id });
+                await _context.SaveChangesAsync();
             }
             return result;
         }
@@ -117,7 +119,6 @@ namespace DataAccessObjects
             return new Token { AccessToken = accessToken, RefreshToken = refreshToken };
         }
 
-
         private JwtSecurityToken GenerateAccessToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
@@ -157,8 +158,11 @@ namespace DataAccessObjects
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-            if (securityToken is not JwtSecurityToken jwtSecurityToken || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters
+                , out SecurityToken securityToken);
+            if (securityToken is not JwtSecurityToken jwtSecurityToken 
+                || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256
+                , StringComparison.InvariantCultureIgnoreCase))
                 throw new SecurityTokenException("Invalid token");
 
             return principal;

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -14,9 +17,12 @@ namespace BusinessObjects.Models
         public string? FirstName { get; set; }
         public DateTime? BirthDate { get; set; }
         public int Point { get; set; }
+        [Required]
         public string? AccountId { get; set; }
-
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual Account? Account { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Vouchers
         [EnableQuery]
-        //[Authorize]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult<IEnumerable<Voucher>>> GetAsync()
         {
             return Ok(await _repo.GetAllAsync());
