@@ -50,12 +50,30 @@ namespace DataAccessObjects
             var user = new Account
             {
                 PhoneNumber = model.Phone,
-                UserName = model.Phone
+                UserName = model.Phone,
+                Status = 1
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 await _userManager.AddToRolesAsync(user, new List<string>() { "Customer" });
+                await _context.Customers.AddAsync(new Customer { AccountId = user.Id });
+                await _context.SaveChangesAsync();
+            }
+            return result;
+        }
+        public async Task<IdentityResult> SignUpAccountAsync(SignUpAccountDTO model)
+        {
+            var user = new Account
+            {
+                PhoneNumber = model.Phone,
+                UserName = model.Phone,
+                Status = 1
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRolesAsync(user, new List<string>() { model.Role });
                 await _context.Customers.AddAsync(new Customer { AccountId = user.Id });
                 await _context.SaveChangesAsync();
             }

@@ -22,8 +22,8 @@ namespace DataAccessObjects
                 && e.IsDeleted == false);
         public async Task<Customer?> GetByAccountIdAsync(string id)
         {
-          var a =  await _context.Customers.FirstOrDefaultAsync(e => e.AccountId == id
-                && e.IsDeleted == false);
+            var a = await _context.Customers.FirstOrDefaultAsync(e => e.AccountId == id
+                  && e.IsDeleted == false);
             return a;
         }
 
@@ -51,5 +51,8 @@ namespace DataAccessObjects
 
         public async Task<bool> ExistAsync(Guid id)
             => await _context.Customers.AnyAsync(e => e.Id == id && e.IsDeleted == false);
+
+        public async Task SaveChangAsync()
+            => await _context.SaveChangesAsync();
     }
 }

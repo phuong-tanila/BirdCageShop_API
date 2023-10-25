@@ -25,12 +25,18 @@ namespace Repositories.Implements
             => await _dao.SignInAsync(model);
         public async Task<IdentityResult> SignUpAsync(SignUpDTO model)
             => await _dao.SignUpAsync(model);
-        public Task SignOutAsync(Account model)
-            => _dao.SignOutAsync(model);
-        public Task<Account> FindByNameAsync(string name)
-            => _userManager.FindByNameAsync(name);
-        public Task<Token> GenerateTokenAsync(Account model)
-            => _dao.GenerateTokenAsync(model);
+        public async Task<IdentityResult> SignUpAccountAsync(SignUpAccountDTO model)
+            => await _dao.SignUpAccountAsync(model);
+        public async Task SignOutAsync(Account model)
+            => await _dao.SignOutAsync(model);
+        public async Task<Account> FindByNameAsync(string name)
+            => await _userManager.FindByNameAsync(name);
+        public async Task<Account> FindByIdAsync(string id)
+            => await _userManager.FindByIdAsync(id);
+        public async Task<IdentityResult> UpdateAsync(Account model)
+            => await _userManager.UpdateAsync(model);
+        public async Task<Token> GenerateTokenAsync(Account model)
+            => await _dao.GenerateTokenAsync(model);
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string accessToken)
             => _dao.GetPrincipalFromExpiredToken(accessToken);
 

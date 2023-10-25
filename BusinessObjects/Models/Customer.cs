@@ -18,6 +18,7 @@ namespace BusinessObjects.Models
         public DateTime? BirthDate { get; set; }
         public int Point { get; set; }
         [Required]
+        [IgnoreDataMember]
         public string? AccountId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]

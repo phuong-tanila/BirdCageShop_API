@@ -4,9 +4,8 @@ using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
 using Repositories;
-using Microsoft.Net.Http.Headers;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.OData.Deltas;
 
 namespace BirdCageShop.Controllers
 {
@@ -23,7 +22,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Customers
         [EnableQuery]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetAsync()
         {
             return Ok(await _repo.GetAllAsync());
@@ -31,7 +30,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Customers/5
         [EnableQuery]
-        [Authorize(Roles = "Admin, Manager, Customer")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<Customer>> GetAsync(Guid? key)
         {
             var model = await _repo.GetByIdAsync((Guid)key!);
@@ -40,35 +39,35 @@ namespace BirdCageShop.Controllers
             return Ok(model);
         }
 
-        //// PUT: odata/Customers/5
-        //[EnableQuery]
-        ////[Authorize(Roles = "Customer")]
-        //public async Task<IActionResult> PutAsync(Guid key, [FromBody] Customer model)
-        //{
-        //    if (!ModelState.IsValid || model is null || key != model.Id)
-        //    {
-        //        return BadRequest("Invalid format");
-        //    }
-        //    var isExist = await _repo.ExistAsync(key);
-        //    if (!isExist)
-        //    {
-        //        return NotFound();
-        //    }
-        //    try
-        //    {
-        //        await _repo.UpdateAsync(model);
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        return BadRequest();
-        //    }
+        // PUT: odata/Customers/5
+        [EnableQuery]
+        [Authorize(Roles = "Admin, Manager")]
+        public async Task<IActionResult> PutAsync(Guid key, [FromBody] Customer model)
+        {
+            if (!ModelState.IsValid || model is null || key != model.Id)
+            {
+                return BadRequest("Invalid format");
+            }
+            var isExist = await _repo.ExistAsync(key);
+            if (!isExist)
+            {
+                return NotFound();
+            }
+            try
+            {
+                await _repo.UpdateAsync(model);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return BadRequest();
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
 
         //// POST: odata/Customers
         //[EnableQuery]
-        ////[Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Ad")]
         //public async Task<ActionResult<Customer>> PostAsync([FromBody] Customer model)
         //{
         //    if (!ModelState.IsValid || model is null)
@@ -106,6 +105,37 @@ namespace BirdCageShop.Controllers
             }
 
             return NoContent();
+        }
+
+        [EnableQuery]
+        public async Task<IActionResult> PatchAsync(Guid key, [FromBody] Delta<Customer> delta)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var entity = await _repo.GetByIdAsync(key);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+            delta.Patch(entity);
+            try
+            {
+                await _repo.SaveChangAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _repo.ExistAsync(key))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            return Updated(entity);
         }
     }
 }

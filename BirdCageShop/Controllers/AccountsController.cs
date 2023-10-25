@@ -53,6 +53,31 @@ namespace BirdCageShop.Controllers
             return await _repo.SignUpAsync(model);
         }
 
+        // POST
+        [HttpPost("sign-up-account")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Post([FromBody] SignUpAccountDTO model)
+        {
+            string role = model.Role;
+            if (role != "Customer" && role != "Staff" && role != "Manager")
+            {
+                return BadRequest("Invalid format");
+            }
+            try
+            {
+                var result = await _repo.SignUpAccountAsync(model);
+                if (result.Succeeded)
+                {
+                    return Ok(result);
+                }
+                return BadRequest(result);
+            }
+            catch (Exception)
+            {
+                return BadRequest("Some thing wrong");
+            }
+        }
+
         [Authorize]
         [HttpGet("hello")]
         public IActionResult SayHello()
@@ -160,6 +185,55 @@ namespace BirdCageShop.Controllers
             catch (Exception)
             {
                 return BadRequest("Something wrong");
+            }
+        }
+
+        // PUT: odata/Accounts/edit-profile
+        [HttpPut("edit-profile")]
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult> UpdateProfileAsync([FromBody] Customer model)
+        {
+            if (!ModelState.IsValid || model is null)
+            {
+                return BadRequest("Invalid format");
+            }
+            try
+            {
+                var result = GetUsernameFromToken().Result;
+                var status = result.Result is OkObjectResult;
+                if (status)
+                {
+                    var user = (Account)(result.Result as OkObjectResult).Value!;
+                    var customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                    if (customer is null) return NotFound();
+                    if (customer.Id != model.Id) return BadRequest("Invalid format");
+                    await _cusRepo.UpdateAsync(model);
+                    return NoContent();
+                }
+                return BadRequest("Invalid information");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        // PUT: odata/Accounts/edit-profile
+        [HttpPut("lock-account")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> LockAccountAsync(string key)
+        {
+            try
+            {
+                var account = await _repo.FindByIdAsync(key);
+                if (account is null) return NotFound();
+                account.Status = 0;
+                var result = await _repo.UpdateAsync(account);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 

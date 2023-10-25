@@ -22,7 +22,7 @@ namespace Repositories.Implements
         public async Task AddAsync(Customer model)
             => await _dao.AddAsync(model);
         public async Task UpdateAsync(Customer model)
-            => await UpdateAsync(model);
+            => await _dao.UpdateAsync(model);
 
         public async Task DeleteAsync(Customer model)
             => await _dao.DeleteAsync(model);
@@ -32,5 +32,8 @@ namespace Repositories.Implements
 
         public async Task<Customer?> GetByAccountIdAsync(string id)
             => await _dao.GetByAccountIdAsync(id);
+
+        public async Task SaveChangAsync() 
+            => await _dao.SaveChangAsync();
     }
 }

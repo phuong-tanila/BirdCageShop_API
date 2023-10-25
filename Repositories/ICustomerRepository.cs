@@ -10,5 +10,6 @@ namespace Repositories
     public interface ICustomerRepository : IBaseRepository<Customer>
     {
         Task<Customer?> GetByAccountIdAsync(string id);
+        Task SaveChangAsync();
     }
 }
