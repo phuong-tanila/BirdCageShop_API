@@ -2,7 +2,7 @@
 using Repositories.Commons.Exceptions;
 using System.Text.Json;
 
-namespace BirdCageShop.Middleawares
+namespace BirdCageShop.Middlewares
 {
     public class ErrorMiddleWare
     {

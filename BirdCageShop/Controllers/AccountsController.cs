@@ -172,7 +172,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Accounts/user-profile
         [HttpGet("user-profile")]
-        [Authorize(Roles = "Customer")]
+        [Authorize]
         public async Task<ActionResult<Customer>> GetProfileAsync()
         {
             try
