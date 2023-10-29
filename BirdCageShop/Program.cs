@@ -1,5 +1,5 @@
 using BirdCageShop.Grpcs;
-using BirdCageShop.Middleawares;
+using BirdCageShop.Middlewares;
 using BusinessObjects;
 using BusinessObjects.Models;
 using DataAccessObjects;
@@ -12,18 +12,24 @@ using Microsoft.OData.ModelBuilder;
 using Repositories;
 using Repositories.Implements;
 using System.Text;
+using System.Text.Json;
 using static Repositories.Commons.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
 // Add services to the container.
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-builder.Services.AddGrpc(opts =>
+var allowAllPolicyName = "AllowAll";
+builder.Services.AddCors(options =>
 {
-    opts.EnableDetailedErrors = true;
-    //opts.
+    options.AddPolicy(allowAllPolicyName, builder =>
+    {
+        builder.WithOrigins("*")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
 });
+
 builder.Services.AddScoped<AccountDAO>();
 builder.Services.AddScoped<RoleDAO>();
 builder.Services.AddScoped<CustomerDAO>();
@@ -72,6 +78,7 @@ builder.Services.AddAuthentication(
 });
 
 var modelBuilder = new ODataConventionModelBuilder();
+modelBuilder.EnableLowerCamelCase();
 modelBuilder.EntitySet<Customer>("Customers");
 modelBuilder.EntitySet<Component>("Components");
 modelBuilder.EntitySet<Voucher>("Vouchers");
@@ -84,6 +91,10 @@ modelBuilder.EntityType<Voucher>();
 
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    })
     .AddOData(
         opt =>
             opt.Select()
@@ -105,13 +116,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors(allowAllPolicyName);
 app.UseMiddleware<ErrorMiddleWare>();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
-app.MapGrpcService<GrpcSmsOtpService>();
 
 app.MapControllers();
 
