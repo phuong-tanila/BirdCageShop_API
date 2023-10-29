@@ -34,12 +34,18 @@ namespace BirdCageShop.Controllers
             try
             {
                 var result = await _repo.SignInAsync(signInModel);
-                if (result is null)
+                if (result.Succeeded)
                 {
-                    return Unauthorized();
+                    var user = await _repo.FindByNameAsync(signInModel.Phone);
+                    bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
+                    if (isConfirmed)
+                    {
+                        var token = await _repo.GenerateTokenAsync(user);
+                        return Ok(token);
+                    }
+                    return Redirect("https://www.toidaucungdc.com");
                 }
-
-                return Ok(result);
+                return NotFound("Phone or password not correct");
             }
             catch (Exception)
             {
@@ -190,7 +196,7 @@ namespace BirdCageShop.Controllers
 
         // PUT: odata/Accounts/edit-profile
         [HttpPut("edit-profile")]
-        [Authorize(Roles = "Customer")]
+        //[Authorize(Roles = "Customer")]
         public async Task<ActionResult> UpdateProfileAsync([FromBody] Customer model)
         {
             if (!ModelState.IsValid || model is null)

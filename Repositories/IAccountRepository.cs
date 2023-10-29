@@ -14,8 +14,9 @@ namespace Repositories
     {
         Task<IdentityResult> SignUpAsync(SignUpDTO model);
         Task<IdentityResult> SignUpAccountAsync(SignUpAccountDTO model);
-        Task<Token> SignInAsync(SignInDTO model);
+        Task<SignInResult> SignInAsync(SignInDTO model);
         Task SignOutAsync(Account model);
+        Task<bool> IsPhoneNumberConfirmedAsync(Account model);
         Task<Account> FindByNameAsync(string name);
         Task<Account> FindByIdAsync(string id);
         Task<IdentityResult> UpdateAsync(Account model);

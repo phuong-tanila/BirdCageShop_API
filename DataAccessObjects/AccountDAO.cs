@@ -30,20 +30,20 @@ namespace DataAccessObjects
             _configuration = configuration;
         }
 
-        public async Task<Token> SignInAsync(SignInDTO model)
-        {
-            var result = await _signInManager.PasswordSignInAsync(model.Phone, model.Password, false, false);
+        //public async Task<Token> SignInAsync(SignInDTO model)
+        //{
+        //    var result = await _signInManager.PasswordSignInAsync(model.Phone, model.Password, false, false);
 
-            if (!result.Succeeded)
-            {
-                return null!;
-            }
-            var user = await _userManager.FindByNameAsync(model.Phone);
+        //    if (!result.Succeeded)
+        //    {
+        //        return null!;
+        //    }
+        //    var user = await _userManager.FindByNameAsync(model.Phone);
 
-            var token = await GenerateTokenAsync(user);
+        //    var token = await GenerateTokenAsync(user);
 
-            return token;
-        }
+        //    return token;
+        //}
 
         public async Task<IdentityResult> SignUpAsync(SignUpDTO model)
         {
