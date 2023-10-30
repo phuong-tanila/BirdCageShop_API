@@ -43,7 +43,7 @@ namespace BirdCageShop.Controllers
                         var token = await _repo.GenerateTokenAsync(user);
                         return Ok(token);
                     }
-                    return Redirect("https://www.toidaucungdc.com");
+                    return Forbid();
                 }
                 return NotFound("Phone or password not correct");
             }
