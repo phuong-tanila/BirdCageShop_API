@@ -38,12 +38,12 @@ namespace BirdCageShop.Controllers
                 {
                     var user = await _repo.FindByNameAsync(signInModel.Phone);
                     bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
-                    //if (isConfirmed)
-                    //{
+                    if (isConfirmed)
+                    {
                         var token = await _repo.GenerateTokenAsync(user);
                         return Ok(token);
-                    //}
-                    //return Redirect("https://www.toidaucungdc.com");
+                    }
+                    return Forbid();
                 }
                 return NotFound("Phone or password not correct");
             }

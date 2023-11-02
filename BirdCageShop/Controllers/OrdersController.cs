@@ -123,7 +123,7 @@ namespace BirdCageShop.Controllers
         public async Task<ActionResult<Order>> PostAsync([FromBody] Order model)
         {
             if (!ModelState.IsValid || model is null || model.OrderDetails.Count == 0)
-                return BadRequest(ModelState.Err);
+                return BadRequest("Invalid format");
 
             string accessToken = Request.Headers[HeaderNames.Authorization]
                 .ToString().Replace("Bearer ", "");
