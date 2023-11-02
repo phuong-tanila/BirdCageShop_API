@@ -77,7 +77,7 @@ namespace BirdCageShop.Controllers
             }
             catch (Exception)
             {
-                return BadRequest("Create fail");
+                return BadRequest();
             }
 
             return Created(model);

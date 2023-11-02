@@ -2,12 +2,15 @@
 using DataAccessObjects;
 using DataTransferObjects;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Twilio.Http;
 
 namespace Repositories.Implements
 {
@@ -45,6 +48,14 @@ namespace Repositories.Implements
             => await _dao.GenerateTokenAsync(model);
         public ClaimsPrincipal? GetPrincipalFromExpiredToken(string accessToken)
             => _dao.GetPrincipalFromExpiredToken(accessToken);
+        public async Task<Account?> FindByTokenAsync(string accessToken)
+        {
+            ClaimsPrincipal? principal = _dao.GetPrincipalFromExpiredToken(accessToken);
+            if (principal is null) return null;
+
+            string username = principal.Identity!.Name!;
+            return await _userManager.FindByNameAsync(username);
+        }
 
     }
 }

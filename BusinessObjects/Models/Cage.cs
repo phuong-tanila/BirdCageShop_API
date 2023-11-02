@@ -23,7 +23,9 @@ namespace BusinessObjects.Models
         public int Price { get; set; }
         public double Rating { get; set; }
         public string ImagePath { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
+        public Guid? CustomerId { get; set; }
+        public virtual Customer CustomerDesign { get; set; }
         public virtual ICollection<CageComponent> CageComponents { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

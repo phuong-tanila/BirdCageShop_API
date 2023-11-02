@@ -16,12 +16,22 @@ namespace DataAccessObjects
         public VoucherDAO(BirdCageShopContext context) { _context = context; }
 
         public async Task<List<Voucher>> GetAllAsync()
-            => await _context.Vouchers.Where(e => e.IsDeleted == false
-                 && e.ExpirationDate > DateTime.Now).ToListAsync();
+            => await _context.Vouchers.Where(e => e.IsDeleted == false &&
+                e.ExpirationDate > DateTime.Now).ToListAsync();
 
         public async Task<Voucher?> GetByIdAsync(Guid id)
-            => await _context.Vouchers.FirstOrDefaultAsync(e => e.Id == id
-                && e.IsDeleted == false && e.ExpirationDate > DateTime.Now);
+            => await _context.Vouchers.FirstOrDefaultAsync(e => e.Id == id &&
+                e.IsDeleted == false && e.ExpirationDate > DateTime.Now);
+
+        public async Task<bool> IsValidAsync(Guid id)
+        {
+            bool isExist = await _context.Orders.AnyAsync(e => e.VoucherId == id &&
+                e.Status != (int)OrderStatus.Canceled);
+            if (isExist) return false;
+
+            return await _context.Vouchers.AnyAsync(e => e.Id == id &&
+                e.IsDeleted == false && e.ExpirationDate > DateTime.Now);
+        }
 
         public async Task AddAsync(Voucher model)
         {

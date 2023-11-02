@@ -20,6 +20,7 @@ namespace DataAccessObjects
         public async Task<Customer?> GetByIdAsync(Guid id)
             => await _context.Customers.FirstOrDefaultAsync(e => e.Id == id
                 && e.IsDeleted == false);
+
         public async Task<Customer?> GetByAccountIdAsync(string id)
         {
             var a = await _context.Customers.FirstOrDefaultAsync(e => e.AccountId == id

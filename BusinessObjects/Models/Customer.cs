@@ -24,6 +24,8 @@ namespace BusinessObjects.Models
         [IgnoreDataMember]
         public virtual Account? Account { get; set; }
         [JsonIgnore]
+        public virtual ICollection<Cage>? CustomCages { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; }
     }
 }

@@ -38,12 +38,12 @@ namespace BirdCageShop.Controllers
                 {
                     var user = await _repo.FindByNameAsync(signInModel.Phone);
                     bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
-                    if (isConfirmed)
-                    {
+                    //if (isConfirmed)
+                    //{
                         var token = await _repo.GenerateTokenAsync(user);
                         return Ok(token);
-                    }
-                    return Redirect("https://www.toidaucungdc.com");
+                    //}
+                    //return Redirect("https://www.toidaucungdc.com");
                 }
                 return NotFound("Phone or password not correct");
             }
@@ -175,18 +175,16 @@ namespace BirdCageShop.Controllers
         [Authorize]
         public async Task<ActionResult<Customer>> GetProfileAsync()
         {
+            string accessToken = Request.Headers[HeaderNames.Authorization]
+                .ToString().Replace("Bearer ", "");
+            if (accessToken == null) return BadRequest("Invalid access token");
+
             try
             {
-                var result = GetUsernameFromToken().Result;
-                var status = result.Result is OkObjectResult;
-                if (status)
-                {
-                    var user = (Account)(result.Result as OkObjectResult).Value!;
-                    var customer = await _cusRepo.GetByAccountIdAsync(user.Id);
-                    if (customer is null) return NotFound();
-                    return Ok(customer);
-                }
-                return result;
+                var user = await _repo.FindByTokenAsync(accessToken);
+                if (user == null) return NotFound();
+
+                return Ok(user);
             }
             catch (Exception)
             {
@@ -203,20 +201,23 @@ namespace BirdCageShop.Controllers
             {
                 return BadRequest("Invalid format");
             }
+
+            string accessToken = Request.Headers[HeaderNames.Authorization]
+                .ToString().Replace("Bearer ", "");
+            if (accessToken == null) return BadRequest("Invalid access token");
+
             try
             {
-                var result = GetUsernameFromToken().Result;
-                var status = result.Result is OkObjectResult;
-                if (status)
-                {
-                    var user = (Account)(result.Result as OkObjectResult).Value!;
-                    var customer = await _cusRepo.GetByAccountIdAsync(user.Id);
-                    if (customer is null) return NotFound();
-                    if (customer.Id != model.Id) return BadRequest("Invalid format");
-                    await _cusRepo.UpdateAsync(model);
-                    return NoContent();
-                }
-                return BadRequest("Invalid information");
+                var user = await _repo.FindByTokenAsync(accessToken);
+                if (user == null) return NotFound();
+
+                var customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                if (customer is null) return NotFound();
+
+                if (customer.Id != model.Id) return BadRequest("Invalid format");
+
+                await _cusRepo.UpdateAsync(model);
+                return NoContent();
             }
             catch (Exception ex)
             {
@@ -243,28 +244,28 @@ namespace BirdCageShop.Controllers
             }
         }
 
-        private async Task<ActionResult<Customer>> GetUsernameFromToken()
-        {
-            string accessToken = Request.Headers[HeaderNames.Authorization]
-                .ToString().Replace("Bearer ", ""); ;
-            //if (accessToken is null) return BadRequest("Invalid client request");
+        //public async Task<ActionResult<Account>> GetAccountFromToken()
+        //{
+        //    string accessToken = Request.Headers[HeaderNames.Authorization]
+        //        .ToString().Replace("Bearer ", "");
+        //    //if (accessToken is null) return BadRequest("Invalid client request");
 
-            try
-            {
-                ClaimsPrincipal principal = _repo.GetPrincipalFromExpiredToken(accessToken)!;
-                if (principal is null) return BadRequest("Invalid access token");
+        //    try
+        //    {
+        //        ClaimsPrincipal principal = _repo.GetPrincipalFromExpiredToken(accessToken)!;
+        //        if (principal is null) return BadRequest("Invalid access token");
 
-                string username = principal.Identity!.Name!;
-                var user = await _repo.FindByNameAsync(username);
-                if (user is null) return BadRequest("Invalid user");
+        //        string username = principal.Identity!.Name!;
+        //        var user = await _repo.FindByNameAsync(username);
+        //        if (user is null) return BadRequest("Invalid user");
 
-                return Ok(user);
-            }
-            catch (Exception)
-            {
-                return BadRequest("Invalid access token");
-            }
-        }
+        //        return Ok(user);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return BadRequest("Invalid access token");
+        //    }
+        //}
 
         private string? GetCurrentUser()
         {
