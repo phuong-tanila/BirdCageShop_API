@@ -35,5 +35,8 @@ namespace Repositories.Implements
 
         public async Task SaveChangAsync() 
             => await _dao.SaveChangAsync();
+
+        public async Task<Customer?> GetByPhoneNumberAsync(string phoneNumber)
+            => await _dao.GetByPhoneNumberAsync(phoneNumber);
     }
 }

@@ -59,6 +59,9 @@ namespace BusinessObjects
                     .IsUnicode(false)
                     .IsRequired();
 
+                entity.Property(e => e.Status)
+                    .IsRequired();
+
                 entity.Property(e => e.InStock)
                     .IsRequired();
 
@@ -66,6 +69,13 @@ namespace BusinessObjects
                     .HasMaxLength(200)
                     .IsUnicode(false)
                     .IsRequired();
+
+                entity.HasOne(e => e.CustomerDesign)
+                    .WithMany(e => e.CustomCages)
+                    .HasForeignKey(e => e.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Cage_Customer")
+                    .IsRequired(false);
             });
 
 
@@ -109,9 +119,13 @@ namespace BusinessObjects
                     .HasMaxLength(100)
                     .IsUnicode(false)
                     .IsRequired();
+                
+                entity.Property(e => e.Type)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .IsRequired();
 
                 entity.Property(e => e.Price)
-                    .HasMaxLength(20)
                     .IsRequired();
             });
 
@@ -199,9 +213,6 @@ namespace BusinessObjects
                     .HasColumnType("datetime")
                     .IsRequired();
 
-                entity.Property(e => e.PaymentDate)
-                    .HasColumnType("datetime");
-
                 entity.Property(e => e.Description)
                     .HasMaxLength(200);
 
@@ -225,6 +236,12 @@ namespace BusinessObjects
                 entity.HasKey(e => e.Id)
                    .HasName("PK_OrderDetail");
 
+                entity.Property(e => e.Price)
+                    .IsRequired();
+
+                entity.Property(e => e.Quantity)
+                    .IsRequired();
+
                 entity.Property(e => e.Content)
                     .HasMaxLength(100);
 
@@ -235,7 +252,8 @@ namespace BusinessObjects
                     .WithMany(p => p.OrderDetails)
                     .HasForeignKey(d => d.CageId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_OrderDetai_Cage");
+                    .HasConstraintName("FK_OrderDetai_Cage")
+                    .IsRequired();
 
                 entity.HasOne(d => d.Order)
                     .WithMany(p => p.OrderDetails)
@@ -282,6 +300,9 @@ namespace BusinessObjects
 
                 entity.Property(e => e.ExpirationDate)
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Discount)
+                    .IsRequired();
 
                 entity.Property(e => e.Title)
                     .HasMaxLength(100)

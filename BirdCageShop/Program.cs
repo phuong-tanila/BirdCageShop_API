@@ -1,4 +1,3 @@
-using BirdCageShop.Grpcs;
 using BirdCageShop.Middlewares;
 using BusinessObjects;
 using BusinessObjects.Models;
@@ -36,8 +35,8 @@ builder.Services.AddScoped<CustomerDAO>();
 builder.Services.AddScoped<ComponentDAO>();
 builder.Services.AddScoped<VoucherDAO>();
 builder.Services.AddScoped<CageDAO>();
+builder.Services.AddScoped<OrderDAO>();
 builder.Services.AddScoped<SmsDAO>();
-
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
@@ -45,6 +44,7 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<ICageRepository, CageRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ISmsOtpRepository, SmsOtpRepository>();
 
 builder.Services.AddDbContext<BirdCageShopContext>();
@@ -80,15 +80,17 @@ builder.Services.AddAuthentication(
 var modelBuilder = new ODataConventionModelBuilder();
 modelBuilder.EnableLowerCamelCase();
 modelBuilder.EntitySet<Customer>("Customers");
+modelBuilder.EntitySet<Role>("Roles");
 modelBuilder.EntitySet<Component>("Components");
-modelBuilder.EntitySet<Voucher>("Vouchers");
 modelBuilder.EntitySet<Cage>("Cages");
-
+modelBuilder.EntitySet<Order>("Orders");
+modelBuilder.EntitySet<Voucher>("Vouchers");
 
 modelBuilder.EntityType<CageComponent>();
 modelBuilder.EntityType<Component>();
+modelBuilder.EntityType<OrderDetail>();
+modelBuilder.EntityType<Customer>();
 modelBuilder.EntityType<Voucher>();
-
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

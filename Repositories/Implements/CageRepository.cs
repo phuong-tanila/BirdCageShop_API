@@ -21,13 +21,14 @@ namespace Repositories.Implements
         private readonly IComponentRepository _componentRepository;
 
         private readonly IMapper _mapper;
-        
+
+        private readonly ICustomerRepository _customerRepository;
+
         public CageRepository(
             CageDAO cageDAO,
             IMapper mapper,
             IComponentRepository componentRepository
-,
-            UserManager<Account> userManager)
+        )
         {
             _cageDAO = cageDAO;
             _mapper = mapper;
@@ -48,6 +49,7 @@ namespace Repositories.Implements
             creatingEntity.Id = Guid.NewGuid();
             creatingEntity.Rating = 0;
             creatingEntity.CreateDate = DateTime.Now;
+            creatingEntity.Status = "AVAILABLE";
             List<string> errorMessages = new List<string>();
             List<string> componentTypes = ComponentTypes.GetComponentTypes();
             foreach (var item in creatingEntity.CageComponents)
@@ -64,18 +66,18 @@ namespace Repositories.Implements
                         componentTypes.Remove(component.Type);
                     }
                 }
-                    
+
             }
             componentTypes.ForEach(ct =>
             {
                 errorMessages.Add($"The cage is missing {ct} component");
             });
-            if(errorMessages.Count > 0 )  
-                throw new InvalidCageComponentException(errorMessages.ToArray()); 
+            if (errorMessages.Count > 0)
+                throw new InvalidCageComponentException(errorMessages.ToArray());
             //creatingEntity.
             return await _cageDAO.CreateAsync(creatingEntity);
         }
-        
+
 
         public async Task<Cage> GetNonDeletedCageByIdAsync(Guid key)
         {
@@ -113,7 +115,7 @@ namespace Repositories.Implements
             mappedCage.InStock = 0;
             mappedCage.Price = 0;
             mappedCage.Rating = 0;
-
+            mappedCage.CustomerDesign = await _customerRepository.GetByPhoneNumberAsync(userPhone);
             return await _cageDAO.CreateAsync(mappedCage);
         }
     }

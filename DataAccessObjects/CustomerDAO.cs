@@ -20,6 +20,7 @@ namespace DataAccessObjects
         public async Task<Customer?> GetByIdAsync(Guid id)
             => await _context.Customers.FirstOrDefaultAsync(e => e.Id == id
                 && e.IsDeleted == false);
+
         public async Task<Customer?> GetByAccountIdAsync(string id)
         {
             var a = await _context.Customers.FirstOrDefaultAsync(e => e.AccountId == id
@@ -54,5 +55,12 @@ namespace DataAccessObjects
 
         public async Task SaveChangAsync()
             => await _context.SaveChangesAsync();
+
+        public async Task<Customer?> GetByPhoneNumberAsync(string phoneNumber)
+        {
+            var a = await _context.Customers.FirstOrDefaultAsync(e => e.Account.PhoneNumber == phoneNumber
+                  && e.IsDeleted == false);
+            return a;
+        }
     }
 }

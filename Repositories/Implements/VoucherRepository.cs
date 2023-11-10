@@ -33,5 +33,8 @@ namespace Repositories.Implements
 
         public async Task<bool> ExistAsync(Guid id)
             => await _dao.ExistAsync(id);
+
+        public async Task<bool> IsValidAsync(Guid id)
+            => await _dao.IsValidAsync(id);
     }
 }

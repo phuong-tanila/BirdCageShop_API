@@ -1,0 +1,75 @@
+﻿using BusinessObjects;
+using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DataAccessObjects
+{
+    public class OrderDAO
+    {
+        private readonly BirdCageShopContext _context;
+        public OrderDAO(BirdCageShopContext context) { _context = context; }
+        public async Task<List<Order>> GetAllAsync()
+            => await _context.Orders.Where(e => e.IsDeleted == false)
+                .Include(e => e.OrderDetails).ToListAsync();
+
+        public async Task<Order?> GetAsync(Guid id)
+            => await _context.Orders.Where(e => e.Id == id && e.IsDeleted == false)
+                .Include(e => e.OrderDetails).FirstOrDefaultAsync();
+
+        public async Task<List<Order>> GetAllByCustomerAsync(Guid cusId)
+           => await _context.Orders.Where(e => e.CustomerId == cusId && e.IsDeleted == false)
+                .Include(e => e.OrderDetails).ToListAsync();
+
+        public async Task AddAsync(Order model)
+        {
+            model.Id = Guid.NewGuid();
+            model.Status = (int)OrderStatus.Processing;
+            model.OrderDate = DateTime.Now;
+            int total = 0;
+            foreach (var i in model.OrderDetails) { total += i.Price; }
+
+            model.Total = total;
+            model.IsDeleted = false;
+
+            if (model.VoucherId != null)
+            {
+                Voucher? voucher = await _context.Vouchers.FindAsync(model.VoucherId!);
+                model.Total = (int)Math.Ceiling(total - (total * voucher!.Discount));
+            }
+
+            _context.Orders.Add(model);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeliveringAsync(Order model)
+        {
+            model.Status = (int)OrderStatus.Delivering;
+
+            _context.Entry(model).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CompleteAsync(Order model)
+        {
+            model.Status = (int)OrderStatus.Completed;
+            model.DeliveryDate = DateTime.Now;
+
+            _context.Entry(model).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task CancelAsync(Order model)
+        {
+            model.Status = (int)OrderStatus.Canceled;
+
+            _context.Entry(model).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
+    }
+}

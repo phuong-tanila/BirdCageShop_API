@@ -14,10 +14,14 @@ namespace BusinessObjects.Models
         [Required]
         public string? Title { get; set; }
         [Required]
+        [Range(0, 1, ErrorMessage = "Invalid {0}")]
+        public double Discount { get; set; }
+        [Required]
         public DateTime EffectiveDate { get; set; }
         [Required]
         public DateTime ExpirationDate { get; set; }
         [Required]
+        [Range(0, Int32.MaxValue, ErrorMessage = "Invalid {0}")]
         public int? ConditionPoint { get; set; }
         [IgnoreDataMember]
         public virtual ICollection<Order>? Orders { get; set; }
