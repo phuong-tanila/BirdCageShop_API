@@ -2,11 +2,13 @@
 using BusinessObjects.Models;
 using DataAccessObjects;
 using DataTransferObjects.CageDTOs;
+using Microsoft.AspNetCore.Identity;
 using Repositories.Commons.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,11 +21,13 @@ namespace Repositories.Implements
         private readonly IComponentRepository _componentRepository;
 
         private readonly IMapper _mapper;
+        
         public CageRepository(
             CageDAO cageDAO,
             IMapper mapper,
             IComponentRepository componentRepository
-        )
+,
+            UserManager<Account> userManager)
         {
             _cageDAO = cageDAO;
             _mapper = mapper;
@@ -95,6 +99,22 @@ namespace Repositories.Implements
         public async Task<Cage> DeleteCageAsync(Guid key)
         {
             return await _cageDAO.DeleteCageAsync(key);
+        }
+
+        public async Task<Cage> CreateCustomAsync(Cage model, string userPhone)
+        {
+            var mappedCage = _mapper.Map<Cage>(model);
+            mappedCage.Name = "Custom cage " + userPhone;
+            mappedCage.Status = "PENDING_" + userPhone;
+            mappedCage.CreateDate = DateTime.Now;
+            mappedCage.IsDeleted = false;
+            mappedCage.Description = "";
+            mappedCage.ImagePath = "";
+            mappedCage.InStock = 0;
+            mappedCage.Price = 0;
+            mappedCage.Rating = 0;
+
+            return await _cageDAO.CreateAsync(mappedCage);
         }
     }
 }

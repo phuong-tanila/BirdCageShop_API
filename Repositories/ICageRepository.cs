@@ -16,5 +16,6 @@ namespace Repositories
         Task<Cage> GetNonDeletedCageByIdAsync(Guid key);
         Task<Cage> UpdateCageAsync(Guid key, UpdateCageModel cage);
         Task<Cage> DeleteCageAsync(Guid key);
+        Task<Cage> CreateCustomAsync(Cage model, string userPhone);
     }
 }
