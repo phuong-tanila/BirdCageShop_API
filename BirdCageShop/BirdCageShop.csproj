@@ -6,10 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Protos\sms-otp.proto" />
-  </ItemGroup>
-
    <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
@@ -28,10 +24,6 @@
 
    <ItemGroup>
      <ProjectReference Include="..\Repositories\Repositories.csproj" />
-   </ItemGroup>
-
-   <ItemGroup>
-     <Protobuf Include="Protos\sms-otp.proto" GrpcServices="Server" />
    </ItemGroup>
 
   <ItemGroup>
