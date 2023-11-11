@@ -38,6 +38,7 @@ builder.Services.AddScoped<ComponentDAO>();
 builder.Services.AddScoped<VoucherDAO>();
 builder.Services.AddScoped<CageDAO>();
 builder.Services.AddScoped<OrderDAO>();
+builder.Services.AddScoped<FeedbackDAO>();
 builder.Services.AddScoped<SmsDAO>();
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -47,6 +48,7 @@ builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 builder.Services.AddScoped<IVoucherRepository, VoucherRepository>();
 builder.Services.AddScoped<ICageRepository, CageRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 builder.Services.AddScoped<ISmsOtpRepository, SmsOtpRepository>();
 
 builder.Services.AddDbContext<BirdCageShopContext>();
@@ -95,20 +97,20 @@ modelBuilder.EntityType<OrderDetail>();
 modelBuilder.EntityType<Customer>();
 modelBuilder.EntityType<Voucher>();
 
-    builder.Services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-        })
-        .AddOData(
-            opt =>
-                opt.Select()
-                .Count().Filter()
-                .OrderBy().SetMaxTop(100)
-                .SkipToken().Expand()
-            .AddRouteComponents("odata", modelBuilder.GetEdmModel()
-        )
-    );
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    })
+    .AddOData(
+        opt =>
+            opt.Select()
+            .Count().Filter()
+            .OrderBy().SetMaxTop(100)
+            .SkipToken().Expand()
+        .AddRouteComponents("odata", modelBuilder.GetEdmModel()
+    )
+);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

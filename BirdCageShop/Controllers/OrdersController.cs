@@ -123,6 +123,7 @@ namespace BirdCageShop.Controllers
 
                 // Create order
                 await _repo.AddAsync(model);
+
             }
             catch (Exception)
             {
@@ -173,7 +174,7 @@ namespace BirdCageShop.Controllers
 
             return NoContent();
         }
-        
+
         // PUT: odata/Orders/cancel
         [HttpPut("odata/[controller]/cancel")]
         [Authorize(Roles = "Customer")]
@@ -199,7 +200,7 @@ namespace BirdCageShop.Controllers
 
             return NoContent();
         }
-        
+
         private async Task<Customer?> GetCustomerFromTokenAsync()
         {
             string accessToken = Request.Headers[HeaderNames.Authorization]

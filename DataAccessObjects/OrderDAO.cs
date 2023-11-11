@@ -13,6 +13,7 @@ namespace DataAccessObjects
     {
         private readonly BirdCageShopContext _context;
         public OrderDAO(BirdCageShopContext context) { _context = context; }
+
         public async Task<List<Order>> GetAllAsync()
             => await _context.Orders.Where(e => e.IsDeleted == false)
                 .Include(e => e.OrderDetails).ToListAsync();
@@ -31,7 +32,10 @@ namespace DataAccessObjects
             model.Status = (int)OrderStatus.Processing;
             model.OrderDate = DateTime.Now;
             int total = 0;
-            foreach (var i in model.OrderDetails) { total += i.Price; }
+            foreach (var i in model.OrderDetails) { 
+                i.Id = Guid.NewGuid();
+                total += i.Price; 
+            }
 
             model.Total = total;
             model.IsDeleted = false;

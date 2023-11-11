@@ -42,7 +42,7 @@ namespace BusinessObjects
         {
             //if (!optionsBuilder.IsConfigured)
             //{
-                //optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");
+            //optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");
                 optionsBuilder.UseSqlServer(GetConnectionString());
             //}
         }

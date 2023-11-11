@@ -66,7 +66,7 @@
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[6.0.0, )"
             },
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
@@ -188,7 +188,11 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
