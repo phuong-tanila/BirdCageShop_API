@@ -50,8 +50,8 @@ namespace BirdCageShop.Controllers
             return _mapper.Map<List<FeedbackDTO>>(list);
         }
 
-        // PUT: api/OrderDetails/5
-        [HttpPut("{id}")]
+        // POST: api/OrderDetails/5
+        [HttpPost("{id}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> PutOrderDetail(Guid id, [FromBody] FeedbackDTO model)
         {
