@@ -1,7 +1,6 @@
 ﻿using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;

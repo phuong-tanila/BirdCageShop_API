@@ -4,6 +4,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(BirdCageShopContext))]
-    partial class BirdCageShopContextModelSnapshot : ModelSnapshot
+    [Migration("20231110075926_add_sold_count")]
+    partial class add_sold_count
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,11 +104,9 @@ namespace BusinessObjects.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("CreateDate")
+                    b.Property<DateTime?>("CreateDate")
+                        .IsRequired()
                         .HasColumnType("datetime");
-
-                    b.Property<Guid?>("CustomerId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -145,7 +145,6 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Width")
@@ -153,8 +152,6 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Cage");
-
-                    b.HasIndex("CustomerId");
 
                     b.ToTable("Cage", (string)null);
                 });
@@ -210,13 +207,12 @@ namespace BusinessObjects.Migrations
 
                     b.Property<int?>("Price")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("int");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id")
                         .HasName("PK_Component");
@@ -326,14 +322,12 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<Guid?>("CustomerId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeliveryDate")
                         .HasColumnType("datetime");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .IsUnicode(false)
                         .HasColumnType("varchar(200)");
@@ -345,10 +339,9 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("PaymentDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime");
 
                     b.Property<int?>("ShipFee")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
@@ -376,7 +369,7 @@ namespace BusinessObjects.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CageId")
+                    b.Property<Guid?>("CageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
@@ -386,7 +379,7 @@ namespace BusinessObjects.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("OrderId")
+                    b.Property<Guid?>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("PostDate")
@@ -460,9 +453,6 @@ namespace BusinessObjects.Migrations
                     b.Property<int?>("ConditionPoint")
                         .IsRequired()
                         .HasColumnType("int");
-
-                    b.Property<double>("Discount")
-                        .HasColumnType("float");
 
                     b.Property<DateTime>("EffectiveDate")
                         .HasColumnType("datetime");
@@ -618,16 +608,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Cage", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Customer", "CustomerDesign")
-                        .WithMany("CustomCages")
-                        .HasForeignKey("CustomerId")
-                        .HasConstraintName("FK_Cage_Customer");
-
-                    b.Navigation("CustomerDesign");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.CageComponent", b =>
                 {
                     b.HasOne("BusinessObjects.Models.Cage", "Cage")
@@ -681,7 +661,6 @@ namespace BusinessObjects.Migrations
                     b.HasOne("BusinessObjects.Models.Customer", "Customer")
                         .WithMany("Orders")
                         .HasForeignKey("CustomerId")
-                        .IsRequired()
                         .HasConstraintName("FK_Order_Customer");
 
                     b.HasOne("BusinessObjects.Models.Voucher", "Voucher")
@@ -699,13 +678,11 @@ namespace BusinessObjects.Migrations
                     b.HasOne("BusinessObjects.Models.Cage", "Cage")
                         .WithMany("OrderDetails")
                         .HasForeignKey("CageId")
-                        .IsRequired()
                         .HasConstraintName("FK_OrderDetai_Cage");
 
                     b.HasOne("BusinessObjects.Models.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
-                        .IsRequired()
                         .HasConstraintName("FK_OrderDetai_Order");
 
                     b.Navigation("Cage");
@@ -785,8 +762,6 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Customer", b =>
                 {
-                    b.Navigation("CustomCages");
-
                     b.Navigation("Orders");
                 });
 

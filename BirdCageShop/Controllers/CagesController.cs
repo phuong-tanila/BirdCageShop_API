@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
 using Repositories;
 using DataTransferObjects.CageDTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace BirdCageShop.Controllers
 {
@@ -13,11 +15,12 @@ namespace BirdCageShop.Controllers
     {
         private readonly BirdCageShopContext _context;
         private readonly ICageRepository _cageRepository;
-        public CagesController(BirdCageShopContext context, ICageRepository cageRepository)
+        private readonly UserManager<Account> _userManager;
+        public CagesController(BirdCageShopContext context, ICageRepository cageRepository, UserManager<Account> userManager)
         {
             _context = context;
             _cageRepository = cageRepository;
-
+            _userManager = userManager;
         }
 
         // GET: api/Cages
@@ -65,8 +68,24 @@ namespace BirdCageShop.Controllers
                 return BadRequest(ModelState);
             }
             var createdCage = await _cageRepository.CreateAsync(model);
-
+            foreach (var item in createdCage.CageComponents)
+            {
+                item.Cage = null;
+            }
             return CreatedAtAction("Get", new { key = createdCage.Id }, createdCage);
+        }
+        [HttpPost("odata/[controller]/custom")]
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult> CreateCustomCage([FromBody] Cage model)
+        {
+            var userPhone = HttpContext.User.Identity.Name;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdCage = await _cageRepository.CreateCustomAsync(model, userPhone);
+            //createdCage.CageComponents
+            return Ok(createdCage);
         }
 
         // DELETE: api/Cages/5

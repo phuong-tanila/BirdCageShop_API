@@ -11,5 +11,7 @@ namespace Repositories
     {
         Task<Customer?> GetByAccountIdAsync(string id);
         Task SaveChangAsync();
+        
+        Task<Customer?> GetByPhoneNumberAsync(string phoneNumber);
     }
 }

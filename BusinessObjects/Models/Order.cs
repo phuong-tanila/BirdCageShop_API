@@ -19,8 +19,10 @@ namespace BusinessObjects.Models
         public DateTime OrderDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
         [Required]
+        [StringLength(200)]
         public string? Description { get; set; }
         [Required]
+        [StringLength(100)]
         public string Address { get; set; }
         public Guid? VoucherId { get; set; }
         [Required]

@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using System.ComponentModel.DataAnnotations;
-using FluentValidation.Internal;
-using NuGet.ContentModel;
+using DataTransferObjects.CageDTOs;
 
 namespace BirdCageShop.Controllers
 {

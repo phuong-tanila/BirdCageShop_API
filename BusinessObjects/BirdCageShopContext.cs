@@ -219,14 +219,13 @@ namespace BusinessObjects
                 entity.Property(e => e.DeliveryDate)
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Description).IsUnicode(false);
+                entity.Property(e => e.Description)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.OrderDate)
                     .HasColumnType("datetime")
                     .IsRequired();
-
-                entity.Property(e => e.Description)
-                    .HasMaxLength(200);
 
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.Orders)
