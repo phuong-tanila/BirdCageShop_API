@@ -1782,8 +1782,7 @@
         "dependencies": {
           "BusinessObjects": "1.0.0",
           "DataTransferObjects": "1.0.0",
-          "Microsoft.AspNetCore.Identity": "2.2.0",
-          "Microsoft.EntityFrameworkCore": "6.0.23"
+          "Microsoft.AspNetCore.Identity": "2.2.0"
         },
         "compile": {
           "bin/placeholder/DataAccessObjects.dll": {}

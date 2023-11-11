@@ -27,12 +27,13 @@ namespace Repositories.Implements
         public CageRepository(
             CageDAO cageDAO,
             IMapper mapper,
-            IComponentRepository componentRepository
-        )
+            IComponentRepository componentRepository,
+            ICustomerRepository customerRepository)
         {
             _cageDAO = cageDAO;
             _mapper = mapper;
             _componentRepository = componentRepository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<List<Cage>> GetNonDeletedCagesAsync()
@@ -106,6 +107,7 @@ namespace Repositories.Implements
         public async Task<Cage> CreateCustomAsync(Cage model, string userPhone)
         {
             var mappedCage = _mapper.Map<Cage>(model);
+            var currentCustomer = await _customerRepository.GetByPhoneNumberAsync(userPhone);
             mappedCage.Name = "Custom cage " + userPhone;
             mappedCage.Status = "PENDING_" + userPhone;
             mappedCage.CreateDate = DateTime.Now;
@@ -115,7 +117,7 @@ namespace Repositories.Implements
             mappedCage.InStock = 0;
             mappedCage.Price = 0;
             mappedCage.Rating = 0;
-            mappedCage.CustomerDesign = await _customerRepository.GetByPhoneNumberAsync(userPhone);
+            mappedCage.CustomerDesign = currentCustomer;
             return await _cageDAO.CreateAsync(mappedCage);
         }
     }

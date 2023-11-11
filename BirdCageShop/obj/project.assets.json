@@ -1117,19 +1117,19 @@
           }
         }
       },
-      "Microsoft.AspNetCore.JsonPatch/7.0.13": {
+      "Microsoft.AspNetCore.JsonPatch/6.0.23": {
         "type": "package",
         "dependencies": {
           "Microsoft.CSharp": "4.7.0",
           "Newtonsoft.Json": "13.0.1"
         },
         "compile": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {
+          "lib/net6.0/Microsoft.AspNetCore.JsonPatch.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll": {
+          "lib/net6.0/Microsoft.AspNetCore.JsonPatch.dll": {
             "related": ".xml"
           }
         }
@@ -5035,8 +5035,7 @@
         "dependencies": {
           "BusinessObjects": "1.0.0",
           "DataTransferObjects": "1.0.0",
-          "Microsoft.AspNetCore.Identity": "2.2.0",
-          "Microsoft.EntityFrameworkCore": "6.0.23"
+          "Microsoft.AspNetCore.Identity": "2.2.0"
         },
         "compile": {
           "bin/placeholder/DataAccessObjects.dll": {}
@@ -6407,22 +6406,22 @@
         "microsoft.aspnetcore.identity.entityframeworkcore.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.JsonPatch/7.0.13": {
-      "sha512": "oam3X5j6/6/H4m11MddKNFimiCuwQfYYZR5WG05/knDpb1FJ778Oe8wthHiohJn0Rimq3qdDOlCjPOhHgrriaA==",
+    "Microsoft.AspNetCore.JsonPatch/6.0.23": {
+      "sha512": "NV2w9DCCqNJDVRgjE28MkKN6KjRSKaPsXChP4rIE0AFAkAnj2KS+aOqXnwNDS1D2UVX/An6fBhnCXRMzIG/2Sg==",
       "type": "package",
-      "path": "microsoft.aspnetcore.jsonpatch/7.0.13",
+      "path": "microsoft.aspnetcore.jsonpatch/6.0.23",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "Icon.png",
         "THIRD-PARTY-NOTICES.TXT",
-        "lib/net462/Microsoft.AspNetCore.JsonPatch.dll",
-        "lib/net462/Microsoft.AspNetCore.JsonPatch.xml",
-        "lib/net7.0/Microsoft.AspNetCore.JsonPatch.dll",
-        "lib/net7.0/Microsoft.AspNetCore.JsonPatch.xml",
+        "lib/net461/Microsoft.AspNetCore.JsonPatch.dll",
+        "lib/net461/Microsoft.AspNetCore.JsonPatch.xml",
+        "lib/net6.0/Microsoft.AspNetCore.JsonPatch.dll",
+        "lib/net6.0/Microsoft.AspNetCore.JsonPatch.xml",
         "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.dll",
         "lib/netstandard2.0/Microsoft.AspNetCore.JsonPatch.xml",
-        "microsoft.aspnetcore.jsonpatch.7.0.13.nupkg.sha512",
+        "microsoft.aspnetcore.jsonpatch.6.0.23.nupkg.sha512",
         "microsoft.aspnetcore.jsonpatch.nuspec"
       ]
     },
@@ -13800,10 +13799,11 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "BusinessObjects >= 1.0.0",
+      "DataTransferObjects >= 1.0.0",
       "FluentValidation >= 11.8.0",
       "Grpc.AspNetCore >= 2.49.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.23",
-      "Microsoft.AspNetCore.JsonPatch >= 7.0.13",
+      "Microsoft.AspNetCore.JsonPatch >= 6.0.23",
       "Microsoft.AspNetCore.OData >= 8.2.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.23",
       "Microsoft.EntityFrameworkCore.Sqlite >= 6.0.23",
@@ -13843,6 +13843,9 @@
             "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
               "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
             },
+            "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
+              "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
+            },
             "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\Repositories\\Repositories.csproj": {
               "projectPath": "D:\\FPT\\CN8\\PRN231\\Project\\Group_project\\BirdCageShop_API\\Repositories\\Repositories.csproj"
             }
@@ -13873,7 +13876,7 @@
           },
           "Microsoft.AspNetCore.JsonPatch": {
             "target": "Package",
-            "version": "[7.0.13, )"
+            "version": "[6.0.23, )"
           },
           "Microsoft.AspNetCore.OData": {
             "target": "Package",

@@ -2,6 +2,7 @@
 using BusinessObjects.Models;
 using DataTransferObjects;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -184,6 +185,10 @@ namespace DataAccessObjects
                 throw new SecurityTokenException("Invalid token");
 
             return principal;
+        }
+        public async Task<Account> FindByUserNameAsync(string username)
+        {
+            return await _context.Users.Include(u => u.Customers).FirstOrDefaultAsync(u => u.UserName == username);
         }
     }
 }

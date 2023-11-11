@@ -54,7 +54,7 @@ namespace Repositories.Implements
             if (principal is null) return null;
 
             string username = principal.Identity!.Name!;
-            return await _userManager.FindByNameAsync(username);
+            return await _dao.FindByUserNameAsync(username);
         }
 
     }

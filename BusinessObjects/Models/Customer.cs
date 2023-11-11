@@ -20,6 +20,9 @@ namespace BusinessObjects.Models
         [Required]
         [IgnoreDataMember]
         public string? AccountId { get; set; }
+
+        public string? Address { get; set; }
+
         [JsonIgnore]
         [IgnoreDataMember]
         public virtual Account? Account { get; set; }

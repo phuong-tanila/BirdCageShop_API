@@ -32,13 +32,17 @@ namespace DataAccessObjects
 
         public async Task<List<Cage>> GetNonDeletedCagesAsync()
         {
-            return await _context.Cages.Where(c => c.IsDeleted == false).Include(c => c.CageComponents).ToListAsync();
+            return await _context.Cages
+                .Where(c => c.IsDeleted == false)
+                .Include(c => c.CageComponents)
+                .ThenInclude(cc => cc.Component)
+                .ToListAsync();
         }
 
         public async Task<Cage> GetNonDeletedCagesByIdAsync(Guid key)
         {
             var list = await _context.Cages
-                .Include(c =>c.CageComponents)
+                .Include(c => c.CageComponents)
                 .ThenInclude(cc => cc.Component)
                 .FirstOrDefaultAsync(c => c.IsDeleted == false && c.Id == key);
             return list;

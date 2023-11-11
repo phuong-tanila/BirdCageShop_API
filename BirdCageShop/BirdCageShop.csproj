@@ -6,15 +6,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Protos\sms-otp.proto" />
-  </ItemGroup>
-
    <ItemGroup>
     <PackageReference Include="FluentValidation" Version="11.8.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
-    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="7.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="6.0.23" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.23" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.23" />
@@ -28,11 +24,8 @@
 
    <ItemGroup>
      <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
+     <ProjectReference Include="..\DataTransferObjects\DataTransferObjects.csproj" />
      <ProjectReference Include="..\Repositories\Repositories.csproj" />
-   </ItemGroup>
-
-   <ItemGroup>
-     <Protobuf Include="Protos\sms-otp.proto" GrpcServices="Server" />
    </ItemGroup>
 
   <ItemGroup>
