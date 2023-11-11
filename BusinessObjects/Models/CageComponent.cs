@@ -9,7 +9,7 @@ namespace BusinessObjects.Models
         public int Quantity { get; set; }
         public Guid? ComponentId { get; set; }
         public Guid? CageId { get; set; }
-        //[JsonIgnore]
+        [JsonIgnore]
         public virtual Cage? Cage { get; set; }
         public virtual Component? Component { get; set; }
     }
