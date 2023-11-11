@@ -32,9 +32,12 @@ namespace DataAccessObjects
             model.Status = (int)OrderStatus.Processing;
             model.OrderDate = DateTime.Now;
             int total = 0;
-            foreach (var i in model.OrderDetails) { 
+            foreach (var i in model.OrderDetails)
+            {
                 i.Id = Guid.NewGuid();
-                total += i.Price; 
+                Cage? cage = await _context.Cages.FindAsync(i.CageId);
+                i.Price = (int)cage!.Price!;
+                total += (int)cage!.Price! * i.Quantity;
             }
 
             model.Total = total;
@@ -43,10 +46,23 @@ namespace DataAccessObjects
             if (model.VoucherId != null)
             {
                 Voucher? voucher = await _context.Vouchers.FindAsync(model.VoucherId!);
-                model.Total = (int)Math.Ceiling(total - (total * voucher!.Discount));
+                if (voucher != null && voucher!.Discount != 0)
+                {
+                    model.Total = (int)Math.Ceiling(total - (total * voucher!.Discount));
+                }
             }
 
             _context.Orders.Add(model);
+
+            // Update cage
+            foreach (var i in model.OrderDetails)
+            {
+                var cage = await _context.Cages.FindAsync(i.CageId);
+                cage!.InStock = cage.InStock - i.Quantity;
+                cage!.Status = "Completed";
+                _context.Entry(cage).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
             await _context.SaveChangesAsync();
         }
 

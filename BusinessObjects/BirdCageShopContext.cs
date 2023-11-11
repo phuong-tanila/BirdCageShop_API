@@ -40,11 +40,12 @@ namespace BusinessObjects
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //if (!optionsBuilder.IsConfigured)
-            //{
-            optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop_old;uid=sa;pwd=12345;TrustServerCertificate=True");
-            //optionsBuilder.UseSqlServer(GetConnectionString());
-            //}
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                //optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer(GetConnectionString());
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
