@@ -2907,11 +2907,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
+      "projectUniqueName": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
       "projectName": "DataAccessObjects",
-      "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
+      "projectPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\DataAccessObjects\\DataAccessObjects.csproj",
       "packagesPath": "C:\\Users\\15tha\\.nuget\\packages\\",
-      "outputPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataAccessObjects\\obj\\",
+      "outputPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\DataAccessObjects\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\15tha\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2928,11 +2928,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
-              "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
+            "D:\\Code\\BirdCageShop\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj": {
+              "projectPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\BusinessObjects\\BusinessObjects.csproj"
             },
-            "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
-              "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
+            "D:\\Code\\BirdCageShop\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj": {
+              "projectPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\DataTransferObjects\\DataTransferObjects.csproj"
             }
           }
         }
@@ -2968,7 +2968,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }

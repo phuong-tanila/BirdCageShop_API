@@ -13602,11 +13602,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
+      "projectUniqueName": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
       "projectName": "BirdCageShop",
-      "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
+      "projectPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\BirdCageShop\\BirdCageShop.csproj",
       "packagesPath": "C:\\Users\\15tha\\.nuget\\packages\\",
-      "outputPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\BirdCageShop\\obj\\",
+      "outputPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\BirdCageShop\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\15tha\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -13623,8 +13623,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\Repositories\\Repositories.csproj": {
-              "projectPath": "E:\\code\\BirdCageShop\\v1\\BirdCageShop_API\\Repositories\\Repositories.csproj"
+            "D:\\Code\\BirdCageShop\\BirdCageShop_API\\Repositories\\Repositories.csproj": {
+              "projectPath": "D:\\Code\\BirdCageShop\\BirdCageShop_API\\Repositories\\Repositories.csproj"
             }
           }
         }
@@ -13701,7 +13701,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
