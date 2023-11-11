@@ -1,4 +1,5 @@
-﻿using FluentValidation.Internal;
+﻿using BusinessObjects.Helper;
+using FluentValidation.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,9 +17,6 @@ namespace BusinessObjects.Models
 
         public int Status { get; set; }
         public DateTime OrderDate { get; set; }
-        [IgnoreDataMember]
-        public DateTime? PaymentDate { get; set; }
-        [IgnoreDataMember]
         public DateTime? DeliveryDate { get; set; }
         [Required]
         public string? Description { get; set; }

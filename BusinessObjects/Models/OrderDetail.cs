@@ -13,7 +13,9 @@ namespace BusinessObjects.Models
 
         public int Price { get; set; }
         [Required]
+        [Range(1, Int32.MaxValue, ErrorMessage = "Invalid {0}")]
         public int Quantity { get; set; }
+        [Range(1, 5, ErrorMessage = "Invalid {0}")]
         public int? Rating { get; set; }
         public string? Content { get; set; }
         public DateTime? PostDate { get; set; }

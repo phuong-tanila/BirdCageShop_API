@@ -6,6 +6,7 @@ using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.AspNetCore.OData.Query;
 using Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BirdCageShop.Controllers
 {
@@ -20,6 +21,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Components
         [EnableQuery]
+        //[Authorize(Roles = "Staff")]
         public async Task<ActionResult<IEnumerable<Component>>> GetAsync()
         {
             return Ok(await _repo.GetAllAsync());
@@ -27,6 +29,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Components/5
         [EnableQuery]
+        //[Authorize(Roles = "Staff, Customer")]
         public async Task<ActionResult<Component>> GetAsync(Guid key)
         {
             var model = await _repo.GetByIdAsync(key);
@@ -38,7 +41,7 @@ namespace BirdCageShop.Controllers
 
         // PUT: odata/Components/5
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> PutAsync(Guid key, [FromBody] Component model)
         {
             if (!ModelState.IsValid || model is null || key != model.Id)
@@ -64,7 +67,7 @@ namespace BirdCageShop.Controllers
 
         // POST: odata/Components
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<ActionResult<Component>> PostAsync([FromBody] Component model)
         {
             if (!ModelState.IsValid || model is null)
@@ -85,7 +88,7 @@ namespace BirdCageShop.Controllers
 
         // DELETE: odata/Components/5
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteAsync(Guid key)
         {
             var model = await _repo.GetByIdAsync(key);

@@ -5,11 +5,13 @@ using DataAccessObjects;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OData.ModelBuilder;
 using Repositories;
 using Repositories.Implements;
+using System.Configuration;
 using System.Text;
 using System.Text.Json;
 using static Repositories.Commons.DependencyInjection;
@@ -71,7 +73,8 @@ builder.Services.AddAuthentication(
         ValidateIssuerSigningKey = true,
         ValidAudience = builder.Configuration["JWT:ValidAudience"],
         ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+        IssuerSigningKey = new SymmetricSecurityKey
+            (Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]!)),
 
         ClockSkew = TimeSpan.Zero
     };
@@ -92,20 +95,20 @@ modelBuilder.EntityType<OrderDetail>();
 modelBuilder.EntityType<Customer>();
 modelBuilder.EntityType<Voucher>();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
-    })
-    .AddOData(
-        opt =>
-            opt.Select()
-            .Count().Filter()
-            .OrderBy().SetMaxTop(100)
-            .SkipToken().Expand()
-        .AddRouteComponents("odata", modelBuilder.GetEdmModel()
-    )
-);
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+        })
+        .AddOData(
+            opt =>
+                opt.Select()
+                .Count().Filter()
+                .OrderBy().SetMaxTop(100)
+                .SkipToken().Expand()
+            .AddRouteComponents("odata", modelBuilder.GetEdmModel()
+        )
+    );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

@@ -15,6 +15,7 @@ using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.ComponentModel.DataAnnotations;
 using FluentValidation.Internal;
+using NuGet.ContentModel;
 
 namespace BirdCageShop.Controllers
 {
@@ -61,22 +62,15 @@ namespace BirdCageShop.Controllers
             return Ok(model);
         }
 
-        // GET: odata/Orders
         // Get all for customer
-        [HttpGet("odata/[Controller]/customer/history")]
+        // GET: odata/Orders
+        [HttpGet("odata/[controller]/history")]
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersCustomer()
         {
-            string accessToken = Request.Headers[HeaderNames.Authorization]
-                .ToString().Replace("Bearer ", "");
-            if (accessToken == null) return BadRequest("Invalid access token");
-
             try
             {
-                var user = await _accRepo.FindByTokenAsync(accessToken);
-                if (user == null) return NotFound("Invalid access token");
-
-                Customer? customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                Customer? customer = await GetCustomerFromTokenAsync();
                 if (customer == null) return NotFound("Invalid access token");
 
                 return Ok(await _repo.GetAllByCustomerAsync(customer.Id));
@@ -87,36 +81,6 @@ namespace BirdCageShop.Controllers
             }
         }
 
-        // PUT: odata/Orders/5
-        //[EnableQuery]
-        //public async Task<IActionResult> PutOrder(Guid id, Order order)
-        //{
-        //    if (id != order.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-
-        //    _context.Entry(order).State = EntityState.Modified;
-
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!OrderExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
-
-        //    return NoContent();
-        //}
-
         // POST: odata/Orders
         [EnableQuery]
         [Authorize(Roles = "Customer")]
@@ -124,19 +88,11 @@ namespace BirdCageShop.Controllers
         {
             if (!ModelState.IsValid || model is null || model.OrderDetails.Count == 0)
                 return BadRequest("Invalid format");
-
-            string accessToken = Request.Headers[HeaderNames.Authorization]
-                .ToString().Replace("Bearer ", "");
-            if (accessToken == null) return BadRequest("Invalid access token");
-
             try
             {
                 // Check valid order
                 #region
-                var user = await _accRepo.FindByTokenAsync(accessToken);
-                if (user == null) return NotFound("Invalid access token");
-
-                Customer? customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                Customer? customer = await GetCustomerFromTokenAsync();
                 if (customer == null) return NotFound("Invalid access token");
 
                 if (customer.Id != model.CustomerId) return BadRequest("Invalid customer");
@@ -153,21 +109,25 @@ namespace BirdCageShop.Controllers
                 #endregion
 
                 // Check valid order detail
+                #region
                 List<OrderDetail> list = (List<OrderDetail>)model.OrderDetails;
-                var dictionary = new Dictionary<Guid, int>();
-                if (Contains(list)) return BadRequest("Invalid order detail");
-
+                var newList = new Dictionary<Guid, int>();
                 foreach (OrderDetail i in list)
                 {
+                    // Check quantity inStock
                     Cage cage = await _cageRepo.GetNonDeletedCageByIdAsync(i.CageId);
                     if (cage is null || cage.InStock < i.Quantity)
                     {
-                        return BadRequest("Invalid cage");
+                        return BadRequest($"Invalid cage {i.CageId} inventory quantity");
                     }
-                    // Add orderDetail
-                    var newOrderDrtails = new Dictionary<Guid, int>();
+                    // Check cage already been added
+                    try { newList.TryAdd(i.CageId, i.Quantity); }
+                    catch (Exception) { return BadRequest($"Cage {i.CageId} already been added"); }
                 }
+                #endregion
+                // Update status cage
 
+                // Create order
                 await _repo.AddAsync(model);
             }
             catch (Exception)
@@ -178,37 +138,92 @@ namespace BirdCageShop.Controllers
             return Created(model);
         }
 
-        private bool Contains(List<OrderDetail> list)
+        // PUT: odata/Orders/delivering
+        [HttpPut("odata/[controller]/delivering")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> Delivering(Guid id)
         {
-            foreach (var i1 in list)
+            Order? order = await _repo.GetAsync(id);
+            if (order is null) return NotFound();
+
+            if (order.Status != (int)OrderStatus.Processing) return BadRequest("Invalid status order");
+            try
             {
-                foreach (var i2 in list)
-                {
-                    if (i1.CageId == i2.CageId) { return true; }
-                }
+                await _repo.DeliveringAsync(order);
             }
-            return false;
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
-        // DELETE: odata/Orders/5
-        //[EnableQuery]
-        //public async Task<IActionResult> DeleteOrder(Guid id)
-        //{
-        //    if (_context.Orders == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var order = await _context.Orders.FindAsync(id);
-        //    if (order == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // PUT: odata/Orders/completed
+        [HttpPut("odata/[controller]/completed")]
+        [Authorize(Roles = "Staff")]
+        public async Task<IActionResult> Completed(Guid id)
+        {
+            Order? order = await _repo.GetAsync(id);
+            if (order is null) return NotFound();
 
-        //    _context.Orders.Remove(order);
-        //    await _context.SaveChangesAsync();
+            if (order.Status != (int)OrderStatus.Delivering) return BadRequest("Invalid status order");
+            try
+            {
+                await _repo.CompleteAsync(order);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            return NoContent();
+        }
         
+        // PUT: odata/Orders/cancel
+        [HttpPut("odata/[controller]/cancel")]
+        [Authorize(Roles = "Customer")]
+        public async Task<IActionResult> Cancel(Guid id)
+        {
+            Customer? customer = await GetCustomerFromTokenAsync();
+            if (customer == null) return NotFound("Invalid access token");
+
+            Order? order = await _repo.GetAsync(id);
+            if (order is null) return NotFound();
+
+            if (customer.Id != order.CustomerId) return BadRequest("Invalid order id");
+
+            if (order.Status != (int)OrderStatus.Processing) return BadRequest("Invalid status order");
+            try
+            {
+                await _repo.CancelAsync(order);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+        
+        private async Task<Customer?> GetCustomerFromTokenAsync()
+        {
+            string accessToken = Request.Headers[HeaderNames.Authorization]
+                .ToString().Replace("Bearer ", "");
+            if (accessToken == null) return null!;
+
+            try
+            {
+                var user = await _accRepo.FindByTokenAsync(accessToken);
+                if (user == null) return null!;
+
+                Customer? customer = await _cusRepo.GetByAccountIdAsync(user.Id);
+                return customer!;
+            }
+            catch (Exception)
+            {
+                return null!;
+            }
+        }
     }
 }

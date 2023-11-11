@@ -4,6 +4,7 @@ using BusinessObjects.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects
 {
@@ -27,11 +28,22 @@ namespace BusinessObjects
         public virtual DbSet<SmsOtp> SmsOtps { get; set; } = null!;
         public virtual DbSet<Voucher> Vouchers { get; set; } = null!;
 
+        public string GetConnectionString()
+        {
+            IConfiguration config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", true, true)
+                .Build();
+            var strConn = config["ConnectionStrings:DB"];
+            return strConn!;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //if (!optionsBuilder.IsConfigured)
             //{
-            optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");
+                //optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer(GetConnectionString());
             //}
         }
 
