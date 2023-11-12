@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -28,6 +29,7 @@ namespace BusinessObjects.Models
         public virtual Customer? CustomerDesign { get; set; }
         public virtual ICollection<CageComponent>? CageComponents { get; set; }
         public virtual ICollection<Image>? Images { get; set; }
+        [JsonIgnore]
         public virtual ICollection<OrderDetail>? OrderDetails { get; set; }
     }
 }

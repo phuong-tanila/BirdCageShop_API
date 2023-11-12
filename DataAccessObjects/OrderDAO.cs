@@ -16,15 +16,24 @@ namespace DataAccessObjects
 
         public async Task<List<Order>> GetAllAsync()
             => await _context.Orders.Where(e => e.IsDeleted == false)
-                .Include(e => e.OrderDetails).ToListAsync();
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Cage)
+                .Include(e => e.Voucher)
+                .ToListAsync();
 
         public async Task<Order?> GetAsync(Guid id)
             => await _context.Orders.Where(e => e.Id == id && e.IsDeleted == false)
-                .Include(e => e.OrderDetails).FirstOrDefaultAsync();
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Cage)
+                .Include(e => e.Voucher)
+                .FirstOrDefaultAsync();
 
         public async Task<List<Order>> GetAllByCustomerAsync(Guid cusId)
-           => await _context.Orders.Where(e => e.CustomerId == cusId && e.IsDeleted == false)
-                .Include(e => e.OrderDetails).ToListAsync();
+           => await _context.Orders.Where(e => e.IsDeleted == false)
+                .Include(o => o.OrderDetails)
+                .ThenInclude(od => od.Cage)
+                .Include(e => e.Voucher)
+                .ToListAsync();
 
         public async Task AddAsync(Order model)
         {
@@ -40,7 +49,9 @@ namespace DataAccessObjects
                 total += (int)cage!.Price! * i.Quantity;
             }
 
-            model.Total = total;
+            if (model.Description is null) model.Description = string.Empty;
+
+            model.Total = total + model.ShipFee;
             model.IsDeleted = false;
 
             if (model.VoucherId != null)

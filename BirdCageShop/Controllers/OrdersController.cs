@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -9,7 +6,6 @@ using Microsoft.AspNetCore.OData.Query;
 using Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
-using DataTransferObjects.CageDTOs;
 
 namespace BirdCageShop.Controllers
 {
@@ -37,16 +33,17 @@ namespace BirdCageShop.Controllers
         // Get all for staff/manager
         // GET: odata/Orders
         [EnableQuery]
-        //[Authorize (Roles = "Staff, Manager")]
+        [Authorize (Roles = "Staff, Manager")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return Ok(await _repo.GetAllAsync());
+            var orders = await _repo.GetAllAsync();
+            return Ok(orders);
         }
 
         // Get order for staff/manager
         // GET: odata/Orders/5
         [EnableQuery]
-        //[Authorize(Roles = "Staff, Manager")]
+        [Authorize(Roles = "Staff, Manager")]
         public async Task<ActionResult<Order>> Get(Guid key)
         {
             var model = await _repo.GetAsync(key);
@@ -58,7 +55,7 @@ namespace BirdCageShop.Controllers
 
         // Get all for customer
         // GET: odata/Orders
-        [HttpGet("odata/[controller]/history")]
+        [HttpGet("odata/[controller]/customer/history")]
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersCustomer()
         {
@@ -134,7 +131,7 @@ namespace BirdCageShop.Controllers
         }
 
         // PUT: odata/Orders/delivering
-        [HttpPut("odata/[controller]/delivering")]
+        [HttpPut("odata/[controller]/delivering/{id}")]
         [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Delivering(Guid id)
         {
@@ -155,7 +152,7 @@ namespace BirdCageShop.Controllers
         }
 
         // PUT: odata/Orders/completed
-        [HttpPut("odata/[controller]/completed")]
+        [HttpPut("odata/[controller]/completed/{id}")]
         [Authorize(Roles = "Staff")]
         public async Task<IActionResult> Completed(Guid id)
         {
@@ -176,7 +173,7 @@ namespace BirdCageShop.Controllers
         }
 
         // PUT: odata/Orders/cancel
-        [HttpPut("odata/[controller]/cancel")]
+        [HttpPut("odata/[controller]/cancel/{id}")]
         [Authorize(Roles = "Customer")]
         public async Task<IActionResult> Cancel(Guid id)
         {

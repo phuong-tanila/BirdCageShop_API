@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -25,6 +26,7 @@ namespace BusinessObjects.Models
         public Guid CageId { get; set; }
 
         public virtual Cage? Cage { get; set; }
+        [JsonIgnore]
         public virtual Order? Order { get; set; }
         public virtual ICollection<FeedbackAttachment> FeedbackAttachments { get; set; }
     }

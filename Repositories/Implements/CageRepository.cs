@@ -2,16 +2,7 @@
 using BusinessObjects.Models;
 using DataAccessObjects;
 using DataTransferObjects.CageDTOs;
-using Microsoft.AspNetCore.Identity;
 using Repositories.Commons.Exceptions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using Twilio.Rest.Trunking.V1;
 
 namespace Repositories.Implements
 {

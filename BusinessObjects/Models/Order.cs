@@ -18,7 +18,6 @@ namespace BusinessObjects.Models
         public int Status { get; set; }
         public DateTime OrderDate { get; set; }
         public DateTime? DeliveryDate { get; set; }
-        [Required]
         [StringLength(200)]
         public string? Description { get; set; }
         [Required]
