@@ -9,6 +9,7 @@ namespace Repositories
 {
     public interface IVoucherRepository : IBaseRepository<Voucher>
     {
+        Task<List<Voucher>> GetByCustomerAsync(Customer model);
         Task<bool> IsValidAsync(Guid id);
     }
 }

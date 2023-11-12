@@ -2,6 +2,7 @@
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -17,11 +18,26 @@ namespace DataAccessObjects
 
         public async Task<List<Voucher>> GetAllAsync()
             => await _context.Vouchers.Where(e => e.IsDeleted == false &&
-                e.ExpirationDate > DateTime.Now).ToListAsync();
+                e.ExpirationDate >= DateTime.Now && e.EffectiveDate <= DateTime.Now)
+                .ToListAsync();
 
         public async Task<Voucher?> GetByIdAsync(Guid id)
             => await _context.Vouchers.FirstOrDefaultAsync(e => e.Id == id &&
-                e.IsDeleted == false && e.ExpirationDate > DateTime.Now);
+                e.IsDeleted == false &&
+                e.ExpirationDate >= DateTime.Now &&
+                e.EffectiveDate <= DateTime.Now);
+
+        public async Task<List<Voucher>> GetByCustomerAsync(Customer model)
+        {
+            var vouchers = await _context.Vouchers.Where(e =>
+                e.IsDeleted == false &&
+                e.ConditionPoint <= model.Point &&
+                e.ExpirationDate >= DateTime.Now &&
+                e.EffectiveDate <= DateTime.Now).ToListAsync();
+            var orders = await _context.Orders.Where(e => e.CustomerId == model.Id).ToListAsync();
+            var result = vouchers.Where(e => !orders.Any(x => x.VoucherId == e.Id)).ToList();
+            return result;
+        }
 
         public async Task<bool> IsValidAsync(Guid id)
         {

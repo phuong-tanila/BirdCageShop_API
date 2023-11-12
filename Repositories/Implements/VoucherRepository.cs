@@ -22,6 +22,9 @@ namespace Repositories.Implements
         public async Task<Voucher?> GetByIdAsync(Guid id)
             => await _dao.GetByIdAsync(id);
 
+        public async Task<List<Voucher>> GetByCustomerAsync(Customer model)
+            => await _dao.GetByCustomerAsync(model);
+
         public async Task AddAsync(Voucher model)
             => await _dao.AddAsync(model);
 
