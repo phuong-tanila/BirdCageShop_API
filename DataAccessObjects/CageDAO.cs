@@ -1,6 +1,7 @@
 ﻿using BusinessObjects;
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,13 @@ namespace DataAccessObjects
 
         public async Task<List<Cage>> GetCagesAsync()
         {
-            return await _context.Cages.ToListAsync();
+            return await _context.Cages
+                .Include(c => c.CageComponents)
+                .ThenInclude(cc => cc.Component)
+                .Include(c => c.Images)
+                .ToListAsync();
         }
-
+        
         public async Task<Cage> CreateAsync(Cage creatingEntity)
         {
             var createdCage = _context.Cages.AddAsync(creatingEntity).Result.Entity;
@@ -36,6 +41,7 @@ namespace DataAccessObjects
                 .Where(c => c.IsDeleted == false)
                 .Include(c => c.CageComponents)
                 .ThenInclude(cc => cc.Component)
+                .Include(c => c.Images)
                 .ToListAsync();
         }
 
@@ -44,6 +50,7 @@ namespace DataAccessObjects
             var list = await _context.Cages
                 .Include(c => c.CageComponents)
                 .ThenInclude(cc => cc.Component)
+                .Include(c => c.Images)
                 .FirstOrDefaultAsync(c => c.IsDeleted == false && c.Id == key);
             return list;
         }
@@ -67,6 +74,30 @@ namespace DataAccessObjects
                 await UpdateCageAsync(cage);
             }
             return cage;
+        }
+
+        public async Task<bool> UpdateCageCustomStatusAsync(Guid key, string status, int price, string description)
+        {
+            try
+            {
+                var cage = await _context.Cages.AsNoTracking().FirstOrDefaultAsync(c => c.Id == key && c.Status.Contains("PENDING") && c.IsDeleted == false);
+                
+                if(cage == null) return false;
+
+                var currentCageStatus = cage.Status;
+                var customerPhone = currentCageStatus.Split("_")[1];
+                cage.Status = status.ToUpper() + "_" + customerPhone;
+                cage.Price = price;
+                cage.Description = description;
+                _context.Cages.Update(cage);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
         }
     }
 }

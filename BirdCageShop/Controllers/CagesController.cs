@@ -31,6 +31,18 @@ namespace BirdCageShop.Controllers
 
             return await _cageRepository.GetNonDeletedCagesAsync();
         }
+        [HttpPost("odata/[controller]/all")]
+        [EnableQuery]
+        public async Task<ActionResult<IEnumerable<Cage>>> GetAllCages()
+        {
+
+            return await _cageRepository.GetCagesAsync();
+        }
+        [HttpPatch("odata/[controller]/status")]
+        public async Task<ActionResult> UpdateCustomCageStatus([FromBody] UpdateCageCustomStatusModel model)
+        {
+            return await _cageRepository.UpdateCageCustomStatusAsync(model) ? NoContent() : BadRequest("Update status fail");
+        }
         [EnableQuery]
         // GET: api/Cages/5
         public async Task<ActionResult<Cage>> Get(Guid key)
@@ -42,7 +54,7 @@ namespace BirdCageShop.Controllers
             }
             return cage;
         }
-
+        
         // PUT: api/Cages/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{key}")]
