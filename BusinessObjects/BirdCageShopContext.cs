@@ -160,6 +160,10 @@ namespace BusinessObjects
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
+                entity.Property(e => e.LastName)
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Customers)
                     .HasForeignKey(d => d.AccountId)

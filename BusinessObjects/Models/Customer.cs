@@ -13,18 +13,17 @@ namespace BusinessObjects.Models
             Orders = new HashSet<Order>();
         }
 
+        [StringLength(50)]
         public string? LastName { get; set; }
+        [StringLength(50)]
         public string? FirstName { get; set; }
         public DateTime? BirthDate { get; set; }
-        public int Point { get; set; }
-        [Required]
-        [IgnoreDataMember]
+        public int? Point { get; set; }
         public string? AccountId { get; set; }
-
+        [StringLength(200)]
         public string? Address { get; set; }
 
         [JsonIgnore]
-        [IgnoreDataMember]
         public virtual Account? Account { get; set; }
         [JsonIgnore]
         public virtual ICollection<Cage>? CustomCages { get; set; }

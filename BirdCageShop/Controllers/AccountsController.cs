@@ -196,7 +196,7 @@ namespace BirdCageShop.Controllers
 
         // PUT: odata/Accounts/edit-profile
         [HttpPut("edit-profile")]
-        //[Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer")]
         public async Task<ActionResult> UpdateProfileAsync([FromBody] Customer model)
         {
             if (!ModelState.IsValid || model is null)
@@ -218,7 +218,11 @@ namespace BirdCageShop.Controllers
 
                 if (customer.Id != model.Id) return BadRequest("Invalid format");
 
-                await _cusRepo.UpdateAsync(model);
+                customer.FirstName = model.FirstName;
+                customer.LastName = model.LastName;
+                customer.Address = model.Address;
+
+                await _cusRepo.UpdateAsync(customer);
                 return NoContent();
             }
             catch (Exception ex)

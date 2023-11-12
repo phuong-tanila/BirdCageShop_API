@@ -58,7 +58,7 @@ namespace DataAccessObjects
             if (result.Succeeded)
             {
                 await _userManager.AddToRolesAsync(user, new List<string>() { "Customer" });
-                await _context.Customers.AddAsync(new Customer { AccountId = user.Id });
+                await _context.Customers.AddAsync(new Customer { AccountId = user.Id , Point = 0});
                 await _context.SaveChangesAsync();
             }
             return result;
