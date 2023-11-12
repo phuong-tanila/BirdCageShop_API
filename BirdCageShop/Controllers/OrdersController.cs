@@ -80,8 +80,8 @@ namespace BirdCageShop.Controllers
         {
             if (!ModelState.IsValid || model is null || model.OrderDetails.Count == 0)
                 return BadRequest("Invalid format");
-            try
-            {
+            //try
+            //{
                 // Check valid order
                 #region
                 Customer? customer = await GetCustomerFromTokenAsync();
@@ -121,12 +121,11 @@ namespace BirdCageShop.Controllers
 
                 // Create order
                 await _repo.AddAsync(model);
-
-            }
-            catch (Exception)
-            {
-                return BadRequest("Create fail");
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    return BadRequest("Create fail");
+            //}
 
             return Created(model);
         }

@@ -39,13 +39,13 @@ namespace BirdCageShop.Controllers
                     var user = await _repo.FindByNameAsync(signInModel.Phone);
                     if (user.Status == 0) return BadRequest("The account is locked");
 
-                    bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
-                    if (isConfirmed)
-                    {
+                    //bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
+                    //if (isConfirmed)
+                    //{
                         var token = await _repo.GenerateTokenAsync(user);
                         return Ok(token);
-                    }
-                    return Forbid();
+                    //}
+                    //return Forbid();
                 }
                 return NotFound("Phone or password not correct");
             }

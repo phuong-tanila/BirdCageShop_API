@@ -28,7 +28,7 @@ namespace BirdCageShop.Controllers
 
         // GET: odata/Vouchers/5
         [EnableQuery]
-        //[Authorize]
+        [Authorize(Roles = "Staff")]
         public async Task<ActionResult<Voucher>> GetAsync(Guid key)
         {
             var model = await _repo.GetByIdAsync(key);
@@ -39,7 +39,7 @@ namespace BirdCageShop.Controllers
         }
 
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> PutAsync(Guid key, [FromBody] Voucher model)
         {
             if (!ModelState.IsValid || model is null || key != model.Id || !IsValid(model))
@@ -65,7 +65,7 @@ namespace BirdCageShop.Controllers
 
         // POST: odata/Vouchers
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<ActionResult<Voucher>> PostAsync([FromBody][BindRequired] Voucher model)
         {
             if (!ModelState.IsValid || model is null || !IsValid(model))
@@ -86,7 +86,7 @@ namespace BirdCageShop.Controllers
 
         // DELETE: odata/Vouchers/5
         [EnableQuery]
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         public async Task<IActionResult> DeleteAsync(Guid key)
         {
             var model = await _repo.GetByIdAsync(key);

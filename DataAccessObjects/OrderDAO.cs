@@ -44,6 +44,8 @@ namespace DataAccessObjects
             model.Status = (int)OrderStatus.Processing;
             model.OrderDate = DateTime.Now;
             int total = 0;
+            int point = 0;
+            const double discount = 0.1;
             foreach (var i in model.OrderDetails)
             {
                 i.Id = Guid.NewGuid();
@@ -54,17 +56,20 @@ namespace DataAccessObjects
 
             if (model.Description is null) model.Description = string.Empty;
 
-            model.Total = total + model.ShipFee;
-            model.IsDeleted = false;
-
             if (model.VoucherId != null)
             {
                 Voucher? voucher = await _context.Vouchers.FindAsync(model.VoucherId!);
                 if (voucher != null && voucher!.Discount != 0)
                 {
-                    model.Total = (int)Math.Ceiling(total - (total * voucher!.Discount));
+                    total = (int)Math.Ceiling(total - (total * voucher!.Discount));
                 }
             }
+            // Point 10%
+            point = (int)Math.Ceiling((double)(total! * discount));
+
+            // Total + ship fee
+            model.Total = total + model.ShipFee;
+            model.IsDeleted = false;
 
             _context.Orders.Add(model);
 
@@ -83,6 +88,9 @@ namespace DataAccessObjects
 
                 _context.Entry(cage).State = EntityState.Modified;
             }
+            // Update customer point
+            Customer? customer = await  _context.Customers.FirstOrDefaultAsync(e => e.Id == model.CustomerId);
+            customer!.Point += point;
 
             await _context.SaveChangesAsync();
         }
