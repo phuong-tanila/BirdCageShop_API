@@ -40,6 +40,7 @@ namespace BusinessObjects
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+
             if (!optionsBuilder.IsConfigured)
             {
                 //optionsBuilder.UseSqlServer("server =(local);database=BirdCageShop;uid=sa;pwd=12345;TrustServerCertificate=True");

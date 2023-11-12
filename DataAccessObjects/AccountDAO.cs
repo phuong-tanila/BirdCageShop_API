@@ -69,7 +69,8 @@ namespace DataAccessObjects
             {
                 PhoneNumber = model.Phone,
                 UserName = model.Phone,
-                Status = 1
+                Status = 1,
+                PhoneNumberConfirmed = true
             };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
