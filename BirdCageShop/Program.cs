@@ -91,6 +91,7 @@ modelBuilder.EntitySet<Cage>("Cages");
 modelBuilder.EntitySet<Order>("Orders");
 modelBuilder.EntitySet<Voucher>("Vouchers");
 
+modelBuilder.EntityType<Cage>();
 modelBuilder.EntityType<CageComponent>();
 modelBuilder.EntityType<Component>();
 modelBuilder.EntityType<OrderDetail>();

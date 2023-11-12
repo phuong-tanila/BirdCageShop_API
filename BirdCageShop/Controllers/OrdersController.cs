@@ -40,7 +40,8 @@ namespace BirdCageShop.Controllers
         //[Authorize (Roles = "Staff, Manager")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            return Ok(await _repo.GetAllAsync());
+            var orders = await _repo.GetAllAsync();
+            return Ok(orders);
         }
 
         // Get order for staff/manager
@@ -58,7 +59,7 @@ namespace BirdCageShop.Controllers
 
         // Get all for customer
         // GET: odata/Orders
-        [HttpGet("odata/[controller]/history")]
+        [HttpGet("odata/[controller]/customer/history")]
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrdersCustomer()
         {
