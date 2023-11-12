@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -31,6 +32,7 @@ namespace BusinessObjects.Models
         [Range(0, Int32.MaxValue, ErrorMessage = "Invalid {0}")]
         public int? ShipFee { get; set; }
 
+        [JsonIgnore]
         public virtual Customer? Customer { get; set; }
         public virtual Voucher? Voucher { get; set; }
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace BusinessObjects.Models
 {
@@ -23,7 +24,7 @@ namespace BusinessObjects.Models
         [Required]
         [Range(0, Int32.MaxValue, ErrorMessage = "Invalid {0}")]
         public int? ConditionPoint { get; set; }
-        [IgnoreDataMember]
+        [JsonIgnore]
         public virtual ICollection<Order>? Orders { get; set; }
     }
 }

@@ -43,7 +43,7 @@ namespace BirdCageShop.Controllers
         // Get order for staff/manager
         // GET: odata/Orders/5
         [EnableQuery]
-        [Authorize(Roles = "Staff, Manager")]
+        [Authorize(Roles = "Staff, Manager, Customer")]
         public async Task<ActionResult<Order>> Get(Guid key)
         {
             var model = await _repo.GetAsync(key);
@@ -64,7 +64,8 @@ namespace BirdCageShop.Controllers
                 Customer? customer = await GetCustomerFromTokenAsync();
                 if (customer == null) return NotFound("Invalid access token");
 
-                return Ok(await _repo.GetAllByCustomerAsync(customer.Id));
+                var list = await _repo.GetAllByCustomerAsync(customer.Id);
+                return Ok(list);
             }
             catch (Exception)
             {

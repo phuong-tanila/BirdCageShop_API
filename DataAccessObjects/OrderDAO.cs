@@ -19,6 +19,7 @@ namespace DataAccessObjects
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Cage)
                 .Include(e => e.Voucher)
+                .Include(e => e.Customer)
                 .ToListAsync();
 
         public async Task<Order?> GetAsync(Guid id)
@@ -26,6 +27,7 @@ namespace DataAccessObjects
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Cage)
                 .Include(e => e.Voucher)
+                .Include(e => e.Customer)
                 .FirstOrDefaultAsync();
 
         public async Task<List<Order>> GetAllByCustomerAsync(Guid cusId)
@@ -33,6 +35,7 @@ namespace DataAccessObjects
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Cage)
                 .Include(e => e.Voucher)
+                .Include(e => e.Customer)
                 .ToListAsync();
 
         public async Task AddAsync(Order model)
