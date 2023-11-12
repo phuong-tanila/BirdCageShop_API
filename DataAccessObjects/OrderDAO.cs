@@ -73,10 +73,17 @@ namespace DataAccessObjects
             {
                 var cage = await _context.Cages.FindAsync(i.CageId);
                 cage!.InStock = cage.InStock - i.Quantity;
-                cage!.Status = "Completed";
+                // Update status cage
+                string status = i.Cage!.Status!;
+                string[] sub = status.Split('_');
+                if (sub[0] == "CUS")
+                {
+                    cage.Status = $"COMPLETE_{sub[1]}";
+                }
+
                 _context.Entry(cage).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
             }
+
             await _context.SaveChangesAsync();
         }
 

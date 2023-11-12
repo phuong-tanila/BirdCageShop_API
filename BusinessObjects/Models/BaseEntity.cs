@@ -12,6 +12,6 @@ namespace BusinessObjects.Models
     {
         public Guid Id { get; set; }
         //[IgnoreDataMember]
-        public bool? IsDeleted { get; set; }
+        public bool? IsDeleted { get; set; } = false;
     }
 }
