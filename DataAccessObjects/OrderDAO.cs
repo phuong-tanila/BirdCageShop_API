@@ -22,16 +22,18 @@ namespace DataAccessObjects
                 .ToListAsync();
 
         public async Task<Order?> GetAsync(Guid id)
-            => await _context.Orders.Where(e => e.IsDeleted == false)
+            => await _context.Orders.Where(e => e.Id == id && e.IsDeleted == false)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Cage)
-                .Include(e => e.Voucher).FirstOrDefaultAsync();
+                .Include(e => e.Voucher)
+                .FirstOrDefaultAsync();
 
         public async Task<List<Order>> GetAllByCustomerAsync(Guid cusId)
            => await _context.Orders.Where(e => e.IsDeleted == false)
                 .Include(o => o.OrderDetails)
                 .ThenInclude(od => od.Cage)
-                .Include(e => e.Voucher).ToListAsync();
+                .Include(e => e.Voucher)
+                .ToListAsync();
 
         public async Task AddAsync(Order model)
         {
