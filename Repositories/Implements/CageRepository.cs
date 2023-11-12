@@ -2,15 +2,7 @@
 using BusinessObjects.Models;
 using DataAccessObjects;
 using DataTransferObjects.CageDTOs;
-using Microsoft.AspNetCore.Identity;
 using Repositories.Commons.Exceptions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repositories.Implements
 {
@@ -119,6 +111,23 @@ namespace Repositories.Implements
             mappedCage.Rating = 0;
             mappedCage.CustomerDesign = currentCustomer;
             return await _cageDAO.CreateAsync(mappedCage);
+        }
+
+        public async Task<bool> UpdateCageCustomStatusAsync(UpdateCageCustomStatusModel model)
+        {
+            var status = model.Status;
+            var key = model.CageId;
+            if (status == "reject" || status == "cus")
+            {
+
+                return await _cageDAO.UpdateCageCustomStatusAsync(key, status, model.Price, model.Description);
+            }
+            return false;
+        }
+
+        public Task<bool> UpdateCageCustomStatusAsync(Guid key, string status)
+        {
+            throw new NotImplementedException();
         }
     }
 }

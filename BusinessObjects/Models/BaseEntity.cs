@@ -11,7 +11,7 @@ namespace BusinessObjects.Models
     public class BaseEntity
     {
         public Guid Id { get; set; }
-        [IgnoreDataMember]
-        public bool IsDeleted { get; set; }
+        //[IgnoreDataMember]
+        public bool? IsDeleted { get; set; }
     }
 }
