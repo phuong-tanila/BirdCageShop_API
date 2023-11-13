@@ -9,6 +9,8 @@ using System.Security.Claims;
 using Microsoft.Net.Http.Headers;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using DataTransferObjects.AccountDTO;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace BirdCageShop.Controllers
 {
@@ -18,15 +20,22 @@ namespace BirdCageShop.Controllers
         private readonly IAccountRepository _repo;
         private readonly ICustomerRepository _cusRepo;
 
-        public AccountsController(IAccountRepository repo
-            , ICustomerRepository cusRepo)
+        public AccountsController(IAccountRepository repo, 
+            ICustomerRepository cusRepo)
         {
             _repo = repo;
             _cusRepo = cusRepo;
         }
 
-        //[ODataRouteComponent]
-        //[ODataRouting]
+        [HttpGet]
+        //[Authorize(Roles = "Admin, Manager")]
+        public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAsync()
+        {
+            List<AccountDTO> list = await _repo.GetAllAsync();
+            var result = list.Where(e => !e.Roles!.Any(x => x == "Admin")).ToList();
+            return result;
+        }
+
         [EnableQuery]
         [HttpPost("sign-in")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signInModel)
@@ -37,7 +46,7 @@ namespace BirdCageShop.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _repo.FindByNameAsync(signInModel.Phone);
-                    if (user.Status == 0) return BadRequest("The account is locked");
+                    if (user.Status == 0) return Forbid("The account is locked");
 
                     //bool isConfirmed = await _repo.IsPhoneNumberConfirmedAsync(user);
                     //if (isConfirmed)

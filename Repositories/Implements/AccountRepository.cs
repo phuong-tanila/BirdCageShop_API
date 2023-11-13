@@ -1,7 +1,10 @@
-﻿using BusinessObjects.Models;
+﻿using AutoMapper;
+using BusinessObjects.Models;
 using DataAccessObjects;
 using DataTransferObjects;
+using DataTransferObjects.AccountDTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
@@ -16,15 +19,36 @@ namespace Repositories.Implements
 {
     public class AccountRepository : IAccountRepository
     {
+        private readonly IMapper _mapper;
         private readonly AccountDAO _dao;
         private readonly UserManager<Account> _userManager;
         private readonly SignInManager<Account> _signInManager;
-        public AccountRepository(AccountDAO dao, UserManager<Account> userManager
-            , SignInManager<Account> signInManager)
+
+
+        public AccountRepository(AccountDAO dao,
+            UserManager<Account> userManager,
+            SignInManager<Account> signInManager,
+            IMapper mapper)
         {
             _dao = dao;
             _userManager = userManager;
             _signInManager = signInManager;
+            _mapper = mapper;
+        }
+
+        public async Task<List<AccountDTO>> GetAllAsync()
+        {
+            List<Account> users = await _userManager.Users.ToListAsync();
+            List<AccountDTO> userDTOs = _mapper.Map<List<AccountDTO>>(users);
+
+            foreach (var user in userDTOs)
+            {
+                user.Roles = await _userManager.GetRolesAsync(user);
+            }
+
+            var results = userDTOs.Where(e => !e.Roles!.Any(x => x == "Admin")).ToList();
+
+            return results;
         }
 
         public async Task<SignInResult> SignInAsync(SignInDTO model)

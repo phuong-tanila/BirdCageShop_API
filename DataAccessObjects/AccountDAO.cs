@@ -1,6 +1,7 @@
 ﻿using BusinessObjects;
 using BusinessObjects.Models;
 using DataTransferObjects;
+using DataTransferObjects.AccountDTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +46,7 @@ namespace DataAccessObjects
 
         //    return token;
         //}
+
 
         public async Task<IdentityResult> SignUpAsync(SignUpDTO model)
         {

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BusinessObjects.Models;
 using DataTransferObjects;
+using DataTransferObjects.AccountDTO;
 using DataTransferObjects.CageComponentDTOs;
 using DataTransferObjects.CageDTOs;
 using DataTransferObjects.ImageDTOs;
@@ -29,6 +30,8 @@ namespace Repositories.Commons
             CreateMap<UpdateCageModel, Cage>();
             CreateMap<CreateImageModel, Image>();
             CreateMap<CreateCageComponentModel, CageComponent>();
+
+            CreateMap<Account, AccountDTO>().ReverseMap();
 
             CreateMap<OrderDetail, FeedbackDTO>()
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Order!.Customer!.LastName))

@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.Models;
 using DataTransferObjects;
+using DataTransferObjects.AccountDTO;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace Repositories
 {
     public interface IAccountRepository
     {
+        Task<List<AccountDTO>> GetAllAsync();
         Task<IdentityResult> SignUpAsync(SignUpDTO model);
         Task<IdentityResult> SignUpAccountAsync(SignUpAccountDTO model);
         Task<SignInResult> SignInAsync(SignInDTO model);
