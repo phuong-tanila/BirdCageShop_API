@@ -240,15 +240,16 @@ namespace BirdCageShop.Controllers
         }
 
         // PUT: odata/Accounts/edit-profile
-        [HttpPut("lock-account")]
+        [HttpPut("lock-account/{id}/{status}")]
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> LockAccountAsync(string key)
+        public async Task<ActionResult> LockAccountAsync(string id, int status)
         {
+            if (id is null || status != 1 || status != 0) return NotFound();
             try
             {
-                var account = await _repo.FindByIdAsync(key);
+                var account = await _repo.FindByIdAsync(id!);
                 if (account is null) return NotFound();
-                account.Status = 0;
+                account.Status = status;
                 var result = await _repo.UpdateAsync(account);
                 return Ok(result);
             }
