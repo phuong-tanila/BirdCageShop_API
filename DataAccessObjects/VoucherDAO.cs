@@ -17,8 +17,7 @@ namespace DataAccessObjects
         public VoucherDAO(BirdCageShopContext context) { _context = context; }
 
         public async Task<List<Voucher>> GetAllAsync()
-            => await _context.Vouchers.Where(e => e.IsDeleted == false &&
-                e.ExpirationDate >= DateTime.Now && e.EffectiveDate <= DateTime.Now)
+            => await _context.Vouchers.Where(e => e.IsDeleted == false )
                 .ToListAsync();
 
         public async Task<Voucher?> GetByIdAsync(Guid id)
