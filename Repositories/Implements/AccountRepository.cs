@@ -38,7 +38,7 @@ namespace Repositories.Implements
 
         public async Task<List<AccountDTO>> GetAllAsync()
         {
-            List<Account> users = await _userManager.Users.ToListAsync();
+            List<Account> users = await _userManager.Users.Include(e => e.Customers).ToListAsync();
             List<AccountDTO> userDTOs = _mapper.Map<List<AccountDTO>>(users);
 
             foreach (var user in userDTOs)

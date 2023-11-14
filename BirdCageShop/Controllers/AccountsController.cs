@@ -31,8 +31,7 @@ namespace BirdCageShop.Controllers
         //[Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<IEnumerable<AccountDTO>>> GetAsync()
         {
-            List<AccountDTO> list = await _repo.GetAllAsync();
-            var result = list.Where(e => !e.Roles!.Any(x => x == "Admin")).ToList();
+            List<AccountDTO> result = await _repo.GetAllAsync();
             return result;
         }
 
