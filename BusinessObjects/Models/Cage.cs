@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlTypes;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -14,10 +15,15 @@ namespace BusinessObjects.Models
             Images = new HashSet<Image>();
             OrderDetails = new HashSet<OrderDetail>();
         }
-
         public string? Name { get; set; }
+        [Required]
+        [Range(0, double.MaxValue)]
         public double Length { get; set; }
+        [Required]
+        [Range(0, double.MaxValue)]
         public double Width { get; set; }
+        [Required]
+        [Range(0, double.MaxValue)]
         public double Height { get; set; }
         public int? InStock { get; set; }
         public string? Description { get; set; }
